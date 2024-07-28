@@ -16,16 +16,12 @@ ${PASSWORD}     Danu
 
 *** Test Cases ***
 Open IFINCMS
-    [Teardown]        Close Browser
-    Create Webdriver    Firefox
-    
     Open website
-
 
 
 *** Keywords ***
 Open website
-    Open Browser    ${BASE_URL}
+    Open Available Browser    ${BASE_URL}
 
     Set Selenium Speed    1 seconds
     Input Text    id:UserName    ${USERNAME}
