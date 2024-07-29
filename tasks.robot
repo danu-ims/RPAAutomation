@@ -16,11 +16,10 @@ ${PASSWORD}     Danu
 
 *** Test Cases ***
 Open IFINCMS
-    [Teardown]        Close Browser
     Create Webdriver    Firefox
-    
-    Open website
 
+    Open website
+    [Teardown]    Close Browser
 
 
 *** Keywords ***
@@ -55,6 +54,6 @@ Open website
     Click Element    //span[(contains(text(), "Add"))]
 
     # Buka Navigasi Setting
-    Input Text    Code    AUTOMATION2
-    Input Password    Description    "AUTOMATION2 GENERATED"
+    Input Text    Code    AUTOMATION3
+    Input Password    Description    "AUTOMATION3 GENERATED"
     Click Button When Visible    //button[@type="submit"]
