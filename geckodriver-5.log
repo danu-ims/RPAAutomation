@@ -1,0 +1,6 @@
+1722335458527	geckodriver	INFO	Listening on 127.0.0.1:62171
+1722335461604	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "62172" "--remote ... ost" "-no-remote" "-profile" "C:\\Users\\IMS-USER81\\AppData\\Local\\robocorp\\temp\\6889c803e9cc5470\\rust_mozprofileBRDIYW"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+Dynamically enable window occlusion 0
+1722335462442	Marionette	INFO	Marionette enabled

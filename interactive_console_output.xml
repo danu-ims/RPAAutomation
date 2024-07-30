@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240728 22:58:07.963" rpa="false" schemaversion="4">
-<suite id="s1" name="Robot Interactive Console" source="c:\Users\Danu\.vscode\extensions\robocorp.robotframework-lsp-1.12.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240730 15:05:39.856" rpa="false" schemaversion="4">
+<suite id="s1" name="Robot Interactive Console" source="c:\Users\IMS-USER81\.vscode\extensions\robocorp.robotframework-lsp-1.12.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
 <test id="s1-t1" name="Default Task/Test" line="5">
 <kw name="Interpreter Main Loop" library="MainLoop">
-<kw name="Open website">
-<msg timestamp="20240728 22:58:08.366" level="FAIL">No keyword with name 'Open website' found.</msg>
-<status status="FAIL" starttime="20240728 22:58:08.365" endtime="20240728 22:58:08.366"/>
+<status status="PASS" starttime="20240730 15:05:39.907" endtime="20240730 15:05:41.671"/>
 </kw>
-<status status="PASS" starttime="20240728 22:58:07.983" endtime="20240728 22:58:09.418"/>
-</kw>
-<status status="PASS" starttime="20240728 22:58:07.982" endtime="20240728 22:58:09.418"/>
+<status status="PASS" starttime="20240730 15:05:39.906" endtime="20240730 15:05:41.672"/>
 </test>
-<status status="PASS" starttime="20240728 22:58:07.964" endtime="20240728 22:58:09.420"/>
+<status status="PASS" starttime="20240730 15:05:39.859" endtime="20240730 15:05:41.673"/>
 </suite>
 <statistics>
 <total>

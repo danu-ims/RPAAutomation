@@ -1,0 +1,15 @@
+1722336333230	geckodriver	INFO	Listening on 127.0.0.1:60212
+1722336336293	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60213" "--remote ... ost" "-no-remote" "-profile" "C:\\Users\\IMS-USER81\\AppData\\Local\\robocorp\\temp\\6889c803e9cc5470\\rust_mozprofileuyjGhf"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+Dynamically enable window occlusion 0
+1722336336820	Marionette	INFO	Marionette enabled
+1722336337399	Marionette	INFO	Listening on port 60546
+WebDriver BiDi listening on ws://127.0.0.1:60213
+Read port: 60546
+1722336337619	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+DevTools listening on ws://127.0.0.1:60213/devtools/browser/33f8d092-bd31-433a-a56a-376c8c10db69
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://147.139.191.88:9003."
+JavaScript error: , line 0: uncaught exception: WebSocket is not in the OPEN state
+1722336363144	Marionette	INFO	Stopped listening on port 60546
+Dynamically enable window occlusion 1

@@ -1,155 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240728 23:10:10.207" rpa="false" schemaversion="4">
-<suite id="s1" name="Tasks" source="e:\Project\Automation\RPAAutomation\tasks.robot">
-<test id="s1-t1" name="Open IFINCMS" line="18">
-<kw name="Create Webdriver" library="RPA.Browser.Selenium">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240730 18:13:10.060" rpa="false" schemaversion="4">
+<suite id="s1" name="IFINCMS" source="d:\RPA\project3\tests\IFINCMS\IFINCMS.robot">
+<test id="s1-t1" name="Login IFINCMS" line="9">
+<kw name="Set Selenium Speed" library="SeleniumLibrary">
+<arg>0.5 seconds</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" starttime="20240730 18:13:10.764" endtime="20240730 18:13:10.764"/>
+</kw>
+<kw name="Valid User Can Login IFINCMS" library="login">
+<kw name="Open Browser To Login IFINCMS Page" library="OpenIFINCMSKeyword">
+<kw name="Create Webdriver" library="SeleniumLibrary">
 <arg>Firefox</arg>
 <doc>Creates an instance of Selenium WebDriver.</doc>
-<msg timestamp="20240728 23:10:10.849" level="INFO">Creating an instance of the Firefox WebDriver.</msg>
-<status status="PASS" starttime="20240728 23:10:10.849" endtime="20240728 23:10:16.424"/>
+<msg timestamp="20240730 18:13:10.767" level="INFO">Creating an instance of the Firefox WebDriver.</msg>
+<status status="PASS" starttime="20240730 18:13:10.767" endtime="20240730 18:13:19.860"/>
 </kw>
-<kw name="Open website">
-<kw name="Open Browser" library="RPA.Browser.Selenium">
-<arg>${BASE_URL}</arg>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>${IFINCMS}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240728 23:10:16.428" level="INFO">Opening browser 'firefox' to base url 'http://147.139.191.88:9003/login'.</msg>
-<status status="PASS" starttime="20240728 23:10:16.426" endtime="20240728 23:10:23.119"/>
+<msg timestamp="20240730 18:13:19.862" level="INFO">Opening browser 'firefox' to base url 'http://localhost:5050/login'.</msg>
+<status status="PASS" starttime="20240730 18:13:19.861" endtime="20240730 18:13:28.718"/>
 </kw>
-<kw name="Set Selenium Speed" library="RPA.Browser.Selenium">
-<arg>1 seconds</arg>
-<doc>Sets the delay that is waited after each Selenium command.</doc>
-<status status="PASS" starttime="20240728 23:10:23.121" endtime="20240728 23:10:23.122"/>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" starttime="20240730 18:13:28.719" endtime="20240730 18:13:29.486"/>
 </kw>
-<kw name="Input Text" library="RPA.Browser.Selenium">
+<status status="PASS" starttime="20240730 18:13:10.766" endtime="20240730 18:13:29.486"/>
+</kw>
+<kw name="Login With Valid Credentials" library="AuthenticationKeyword">
+<arg>Danu</arg>
+<arg>Danu</arg>
+<kw name="Input Text" library="SeleniumLibrary">
 <arg>id:UserName</arg>
-<arg>${USERNAME}</arg>
+<arg>${UserName}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:23.124" level="INFO">Typing text 'Danu' into text field 'id:UserName'.</msg>
-<status status="PASS" starttime="20240728 23:10:23.123" endtime="20240728 23:10:26.226"/>
+<msg timestamp="20240730 18:13:29.489" level="INFO">Typing text 'Danu' into text field 'id:UserName'.</msg>
+<status status="PASS" starttime="20240730 18:13:29.488" endtime="20240730 18:13:31.106"/>
 </kw>
-<kw name="Input Password" library="RPA.Browser.Selenium">
+<kw name="Input Password" library="SeleniumLibrary">
 <arg>id:Password</arg>
-<arg>${PASSWORD}</arg>
+<arg>${Password}</arg>
 <doc>Types the given password into the text field identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:26.227" level="INFO">Typing password into text field 'id:Password'.</msg>
-<msg timestamp="20240728 23:10:28.255" level="INFO">Temporally setting log level to: NONE</msg>
-<msg timestamp="20240728 23:10:29.271" level="INFO">Log level changed from NONE to INFO.</msg>
-<status status="PASS" starttime="20240728 23:10:26.226" endtime="20240728 23:10:29.273"/>
+<msg timestamp="20240730 18:13:31.108" level="INFO">Typing password into text field 'id:Password'.</msg>
+<msg timestamp="20240730 18:13:32.139" level="INFO">Temporally setting log level to: NONE</msg>
+<msg timestamp="20240730 18:13:32.661" level="INFO">Log level changed from NONE to INFO.</msg>
+<status status="PASS" starttime="20240730 18:13:31.107" endtime="20240730 18:13:32.661"/>
 </kw>
-<kw name="Click Button When Visible" library="RPA.Browser.Selenium">
+<kw name="Click Button" library="SeleniumLibrary">
 <arg>//button[@type="submit"]</arg>
-<doc>Click button identified by ``locator``, once it becomes visible.</doc>
-<msg timestamp="20240728 23:10:31.354" level="INFO">Clicking button '//button[@type="submit"]'.</msg>
-<status status="PASS" starttime="20240728 23:10:29.273" endtime="20240728 23:10:36.622"/>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20240730 18:13:32.664" level="INFO">Clicking button '//button[@type="submit"]'.</msg>
+<status status="PASS" starttime="20240730 18:13:32.662" endtime="20240730 18:13:35.441"/>
 </kw>
-<kw name="Wait Until Element Contains" library="RPA.Browser.Selenium">
-<arg>//h4[@title="CLIENT MANAGEMENT"]</arg>
-<arg>CLIENT MANAGEMENT</arg>
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<status status="PASS" starttime="20240728 23:10:36.623" endtime="20240728 23:10:38.660"/>
+<status status="PASS" starttime="20240730 18:13:29.487" endtime="20240730 18:13:35.441"/>
 </kw>
-<kw name="Click Element" library="RPA.Browser.Selenium">
-<arg>//h4[(contains(text(), "CLIENT MANAGEMENT"))]</arg>
+<status status="PASS" starttime="20240730 18:13:10.765" endtime="20240730 18:13:35.442"/>
+</kw>
+<kw name="Logout" library="logout">
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>xpath:.//div[id="logout"]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:38.661" level="INFO">Clicking element '//h4[(contains(text(), "CLIENT MANAGEMENT"))]'.</msg>
-<status status="PASS" starttime="20240728 23:10:38.660" endtime="20240728 23:10:40.818"/>
+<msg timestamp="20240730 18:13:35.448" level="INFO">Clicking element 'xpath:.//div[id="logout"]'.</msg>
+<msg timestamp="20240730 18:13:36.528" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-8.png"&gt;&lt;img src="selenium-screenshot-8.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240730 18:13:36.528" level="FAIL">Element with locator 'xpath:.//div[id="logout"]' not found.</msg>
+<status status="FAIL" starttime="20240730 18:13:35.447" endtime="20240730 18:13:36.538"/>
 </kw>
-<kw name="Start Process" library="Process">
-<arg>python</arg>
-<arg>D:\\RPA\\project3\\BrowserAlert.py</arg>
-<doc>Starts a new process on background.</doc>
-<msg timestamp="20240728 23:10:40.818" level="INFO">Starting process:
-python D:\RPA\project3\BrowserAlert.py</msg>
-<status status="PASS" starttime="20240728 23:10:40.818" endtime="20240728 23:10:40.826"/>
+<status status="FAIL" starttime="20240730 18:13:35.447" endtime="20240730 18:13:36.539"/>
 </kw>
-<kw name="Wait Until Element Contains" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "Setting"))]</arg>
-<arg>Setting</arg>
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<status status="PASS" starttime="20240728 23:10:40.826" endtime="20240728 23:10:42.856"/>
-</kw>
-<kw name="Click Element" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "Setting"))]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:42.857" level="INFO">Clicking element '//span[(contains(text(), "Setting"))]'.</msg>
-<status status="PASS" starttime="20240728 23:10:42.856" endtime="20240728 23:10:45.082"/>
-</kw>
-<kw name="Wait Until Element Contains" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "General Code"))]</arg>
-<arg>General Code</arg>
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<status status="PASS" starttime="20240728 23:10:45.082" endtime="20240728 23:10:47.117"/>
-</kw>
-<kw name="Click Element" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "General Code"))]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:47.119" level="INFO">Clicking element '//span[(contains(text(), "General Code"))]'.</msg>
-<status status="PASS" starttime="20240728 23:10:47.118" endtime="20240728 23:10:49.344"/>
-</kw>
-<kw name="Wait Until Element Contains" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "General Code"))]</arg>
-<arg>General Code</arg>
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<status status="PASS" starttime="20240728 23:10:49.345" endtime="20240728 23:10:51.376"/>
-</kw>
-<kw name="Click Element" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "General Code"))]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:51.377" level="INFO">Clicking element '//span[(contains(text(), "General Code"))]'.</msg>
-<status status="PASS" starttime="20240728 23:10:51.376" endtime="20240728 23:10:53.613"/>
-</kw>
-<kw name="Wait Until Element Contains" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "Add"))]</arg>
-<arg>Add</arg>
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<status status="PASS" starttime="20240728 23:10:53.613" endtime="20240728 23:10:55.638"/>
-</kw>
-<kw name="Click Element" library="RPA.Browser.Selenium">
-<arg>//span[(contains(text(), "Add"))]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:55.639" level="INFO">Clicking element '//span[(contains(text(), "Add"))]'.</msg>
-<status status="PASS" starttime="20240728 23:10:55.638" endtime="20240728 23:10:57.872"/>
-</kw>
-<kw name="Input Text" library="RPA.Browser.Selenium">
-<arg>Code</arg>
-<arg>AUTOMATION2</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240728 23:10:57.873" level="INFO">Typing text 'AUTOMATION2' into text field 'Code'.</msg>
-<status status="PASS" starttime="20240728 23:10:57.873" endtime="20240728 23:11:00.903"/>
-</kw>
-<kw name="Input Password" library="RPA.Browser.Selenium">
-<arg>Description</arg>
-<arg>"AUTOMATION2 GENERATED"</arg>
-<doc>Types the given password into the text field identified by ``locator``.</doc>
-<msg timestamp="20240728 23:11:00.904" level="INFO">Typing password into text field 'Description'.</msg>
-<msg timestamp="20240728 23:11:02.933" level="INFO">Temporally setting log level to: NONE</msg>
-<msg timestamp="20240728 23:11:03.952" level="INFO">Log level changed from NONE to INFO.</msg>
-<status status="PASS" starttime="20240728 23:11:00.903" endtime="20240728 23:11:03.952"/>
-</kw>
-<kw name="Click Button When Visible" library="RPA.Browser.Selenium">
-<arg>//button[@type="submit"]</arg>
-<doc>Click button identified by ``locator``, once it becomes visible.</doc>
-<msg timestamp="20240728 23:11:05.978" level="INFO">Clicking button '//button[@type="submit"]'.</msg>
-<status status="PASS" starttime="20240728 23:11:03.953" endtime="20240728 23:11:11.243"/>
-</kw>
-<status status="PASS" starttime="20240728 23:10:16.425" endtime="20240728 23:11:11.243"/>
-</kw>
-<kw name="Close Browser" library="RPA.Browser.Selenium" type="TEARDOWN">
-<doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20240728 23:11:11.244" endtime="20240728 23:11:14.994"/>
-</kw>
-<status status="PASS" starttime="20240728 23:10:10.848" endtime="20240728 23:11:14.995"/>
+<status status="FAIL" starttime="20240730 18:13:10.761" endtime="20240730 18:13:36.546">Element with locator 'xpath:.//div[id="logout"]' not found.</status>
 </test>
-<status status="PASS" starttime="20240728 23:10:10.213" endtime="20240728 23:11:14.997"/>
+<status status="FAIL" starttime="20240730 18:13:10.070" endtime="20240730 18:13:36.549"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="0" skip="0">All Tests</stat>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="1" fail="0" skip="0" id="s1" name="Tasks">Tasks</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="IFINCMS">IFINCMS</stat>
 </suite>
 </statistics>
 <errors>
