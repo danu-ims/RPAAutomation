@@ -3,8 +3,8 @@ Library     SeleniumLibrary
 
 
 *** Keywords ***
-# region IFINSYS LOGIN
+# region IFINCMS SideNav
 Open Sidebar Menu Setting
     Wait Until Element Contains    //span[(contains(text(), "Setting"))]    Setting
     Click Element    //span[(contains(text(), "Setting"))]
-# endregion IFINSYS LOGIN
+# endregion IFINCMS SideNav

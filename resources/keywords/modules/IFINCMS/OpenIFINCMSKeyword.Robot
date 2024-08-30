@@ -7,6 +7,6 @@ Resource    resources/variables/BaseVariables.robot
 # region Open IFINCMS
 Open Browser To Login IFINCMS Page
     Create Webdriver    Firefox
-    Open Browser    ${IFINCMS}
+    Open Browser    ${BASEURL}
     Maximize Browser Window
 # endregion Open IFINCMS
