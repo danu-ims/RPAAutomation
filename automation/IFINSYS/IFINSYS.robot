@@ -6,11 +6,11 @@ Resource    cases/Branch.robot
 
 *** Variables ***
 ${Code} =           FakerLibrary.Generate Random Number
-${BranchName} =     FakerLibrary.Generate Random City
-${PhoneNumber} =    FakerLibrary.Generate Random Phone Number
-${FaxNumber} =      FakerLibrary.Generate Random Phone Number
-${Email} =          FakerLibrary.Generate Random Email
-${Address}=         FakerLibrary.Generate Random Address
+${BranchName} =     AUTOMATION BRANCH
+${PhoneNumber} =    89631
+${FaxNumber} =      5123
+${Email} =          auto@auto.auto
+${Address}=         autoaddress
 
 
 *** Test Cases ***
@@ -18,8 +18,8 @@ Login IFINSYS
     Set Selenium Speed    0.2 seconds
     Valid User Can Login IFINSYS
 
-# Open Card IFINSYS
-#    Open Card IFINSYS
+Open Card IFINSYS
+    Open Card IFINSYS
 
 automation Branch
     Open Sidebar Menu Company Information
