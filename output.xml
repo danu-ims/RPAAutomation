@@ -1,26 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240830 10:00:00.095" rpa="false" schemaversion="4">
-<suite id="s1" name="IFINSYS" source="d:\RPA\project3\automation\IFINSYS\IFINSYS.robot">
-<test id="s1-t1" name="Open Card IFINCMS" line="12">
-<kw name="Open Card IFINCMS" library="OpenCardModulesKeyword">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240918 23:48:42.277" rpa="false" schemaversion="4">
+<suite id="s1" name="CMS" source="e:\Project\Learn\project3\automation\CMS\CMS.robot">
+<test id="s1-t1" name="Login IFINCMS" line="8">
+<kw name="Set Selenium Speed" library="SeleniumLibrary">
+<arg>0.2 seconds</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" starttime="20240918 23:48:42.544" endtime="20240918 23:48:42.545"/>
+</kw>
+<kw name="Valid User Can Login" library="Login">
+<arg>Danu</arg>
+<arg>Danu</arg>
+<kw name="Create Webdriver" library="SeleniumLibrary">
+<arg>Firefox</arg>
+<doc>Creates an instance of Selenium WebDriver.</doc>
+<msg timestamp="20240918 23:48:42.546" level="INFO">Creating an instance of the Firefox WebDriver.</msg>
+<status status="PASS" starttime="20240918 23:48:42.545" endtime="20240918 23:48:47.997"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>${BASEURL}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240918 23:48:48.000" level="INFO">Opening browser 'firefox' to base url 'http://147.139.191.88:9100/'.</msg>
+<status status="PASS" starttime="20240918 23:48:47.998" endtime="20240918 23:48:54.081"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" starttime="20240918 23:48:54.081" endtime="20240918 23:48:54.574"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>id:UserName</arg>
+<arg>${UserName}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240918 23:48:54.575" level="INFO">Typing text 'Danu' into text field 'id:UserName'.</msg>
+<status status="PASS" starttime="20240918 23:48:54.575" endtime="20240918 23:48:55.224"/>
+</kw>
+<kw name="Input Password" library="SeleniumLibrary">
+<arg>id:Password</arg>
+<arg>${Password}</arg>
+<doc>Types the given password into the text field identified by ``locator``.</doc>
+<msg timestamp="20240918 23:48:55.225" level="INFO">Typing password into text field 'id:Password'.</msg>
+<msg timestamp="20240918 23:48:55.656" level="INFO">Temporally setting log level to: NONE</msg>
+<msg timestamp="20240918 23:48:55.871" level="INFO">Log level changed from NONE to INFO.</msg>
+<status status="PASS" starttime="20240918 23:48:55.224" endtime="20240918 23:48:55.871"/>
+</kw>
+<kw name="Click Button" library="SeleniumLibrary">
+<arg>//button[@type="submit"]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20240918 23:48:55.872" level="INFO">Clicking button '//button[@type="submit"]'.</msg>
+<status status="PASS" starttime="20240918 23:48:55.871" endtime="20240918 23:48:57.163"/>
+</kw>
+<status status="PASS" starttime="20240918 23:48:42.545" endtime="20240918 23:48:57.163"/>
+</kw>
+<kw name="Open Card CMS" library="OpenCard">
+<arg>Client Management</arg>
 <kw name="Wait Until Element Contains" library="SeleniumLibrary">
-<arg>//h4[@title="Base"]</arg>
-<arg>Base</arg>
+<arg>//h4[@title="${NameCard}"]</arg>
+<arg>${NameCard}</arg>
 <doc>Waits until the element ``locator`` contains ``text``.</doc>
-<msg timestamp="20240830 10:00:00.979" level="INFO">Cannot capture screenshot because no browser is open.</msg>
-<msg timestamp="20240830 10:00:01.037" level="FAIL">No browser is open.</msg>
-<status status="FAIL" starttime="20240830 10:00:00.978" endtime="20240830 10:00:01.054"/>
+<status status="PASS" starttime="20240918 23:48:57.164" endtime="20240918 23:48:57.592"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
-<arg>//h4[(contains(text(), "Base"))]</arg>
+<arg>//h4[(contains(text(), "${NameCard}"))]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240830 10:00:01.055" endtime="20240830 10:00:01.056"/>
+<msg timestamp="20240918 23:48:57.594" level="INFO">Clicking element '//h4[(contains(text(), "Client Management"))]'.</msg>
+<status status="PASS" starttime="20240918 23:48:57.592" endtime="20240918 23:49:01.581"/>
 </kw>
-<status status="FAIL" starttime="20240830 10:00:00.977" endtime="20240830 10:00:01.056"/>
+<status status="PASS" starttime="20240918 23:48:57.164" endtime="20240918 23:49:01.581"/>
 </kw>
-<status status="FAIL" starttime="20240830 10:00:00.976" endtime="20240830 10:00:01.061">No browser is open.</status>
+<kw name="Open Sidebar Menu" library="OpenSidebar">
+<arg>Setting</arg>
+<kw name="Wait Until Element Contains" library="SeleniumLibrary">
+<arg>//span[(contains(text(), "${Sidebar}"))]</arg>
+<arg>${Sidebar}</arg>
+<doc>Waits until the element ``locator`` contains ``text``.</doc>
+<status status="PASS" starttime="20240918 23:49:01.582" endtime="20240918 23:49:02.009"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>//span[(contains(text(), "${Sidebar}"))]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240918 23:49:02.011" level="INFO">Clicking element '//span[(contains(text(), "Setting"))]'.</msg>
+<status status="PASS" starttime="20240918 23:49:02.009" endtime="20240918 23:49:02.657"/>
+</kw>
+<status status="PASS" starttime="20240918 23:49:01.582" endtime="20240918 23:49:02.657"/>
+</kw>
+<kw name="Open Sidebar Menu" library="OpenSidebar">
+<arg>General</arg>
+<kw name="Wait Until Element Contains" library="SeleniumLibrary">
+<arg>//span[(contains(text(), "${Sidebar}"))]</arg>
+<arg>${Sidebar}</arg>
+<doc>Waits until the element ``locator`` contains ``text``.</doc>
+<status status="PASS" starttime="20240918 23:49:02.658" endtime="20240918 23:49:03.089"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>//span[(contains(text(), "${Sidebar}"))]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240918 23:49:03.090" level="INFO">Clicking element '//span[(contains(text(), "General"))]'.</msg>
+<status status="PASS" starttime="20240918 23:49:03.089" endtime="20240918 23:49:03.725"/>
+</kw>
+<status status="PASS" starttime="20240918 23:49:02.657" endtime="20240918 23:49:03.725"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>//button[(contains(text(), ""Add""))]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240918 23:49:03.726" level="INFO">Clicking element '//button[(contains(text(), ""Add""))]'.</msg>
+<msg timestamp="20240918 23:49:04.055" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-11.png"&gt;&lt;img src="selenium-screenshot-11.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240918 23:49:04.056" level="FAIL">InvalidSelectorException: Message: Given xpath expression "//button[(contains(text(), ""Add""))]" is invalid: SyntaxError: Document.evaluate: The expression is not a legal expression; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalid-selector-exception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+InvalidSelectorError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:432:5
+find_@chrome://remote/content/shared/DOM.sys.mjs:170:11
+</msg>
+<status status="FAIL" starttime="20240918 23:49:03.726" endtime="20240918 23:49:04.058"/>
+</kw>
+<status status="FAIL" starttime="20240918 23:48:42.543" endtime="20240918 23:49:04.059">InvalidSelectorException: Message: Given xpath expression "//button[(contains(text(), ""Add""))]" is invalid: SyntaxError: Document.evaluate: The expression is not a legal expression; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalid-selector-exception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+InvalidSelectorError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:432:5
+find_@chrome://remote/content/shared/DOM.sys.mjs:170:11
+</status>
 </test>
-<status status="FAIL" starttime="20240830 10:00:00.108" endtime="20240830 10:00:01.066"/>
+<status status="FAIL" starttime="20240918 23:48:42.282" endtime="20240918 23:49:04.060"/>
 </suite>
 <statistics>
 <total>
@@ -29,7 +129,7 @@
 <tag>
 </tag>
 <suite>
-<stat pass="0" fail="1" skip="0" id="s1" name="IFINSYS">IFINSYS</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="CMS">CMS</stat>
 </suite>
 </statistics>
 <errors>

@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 5.0.1 (Python 3.10.12 on win32)" generated="20240830 15:27:40.813" rpa="false" schemaversion="3">
-<suite id="s1" name="Robot Interactive Console" source="c:\Users\IMS-USER81\.vscode\extensions\robocorp.robotframework-lsp-1.12.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on win32)" generated="20240918 22:56:25.079" rpa="false" schemaversion="4">
+<suite id="s1" name="Robot Interactive Console" source="c:\Users\Danu\.vscode\extensions\robocorp.robotframework-lsp-1.12.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
 <test id="s1-t1" name="Default Task/Test" line="5">
 <kw name="Interpreter Main Loop" library="MainLoop">
-<kw name="Set Selenium Speed">
-<arg>0.2 seconds</arg>
-<msg timestamp="20240830 15:27:41.771" level="FAIL">No keyword with name 'Set Selenium Speed' found.</msg>
-<status status="FAIL" starttime="20240830 15:27:41.771" endtime="20240830 15:27:41.771"/>
+<status status="PASS" starttime="20240918 22:56:25.100" endtime="20240918 22:58:03.545"/>
 </kw>
-<kw name="Valid User Can Login IFINSYS">
-<status status="NOT RUN" starttime="20240830 15:27:41.775" endtime="20240830 15:27:41.775"/>
-</kw>
-<status status="PASS" starttime="20240830 15:27:40.859" endtime="20240830 15:27:44.005"/>
-</kw>
-<status status="PASS" starttime="20240830 15:27:40.858" endtime="20240830 15:27:44.005"/>
+<status status="PASS" starttime="20240918 22:56:25.100" endtime="20240918 22:58:03.545"/>
 </test>
-<status status="PASS" starttime="20240830 15:27:40.817" endtime="20240830 15:27:44.006"/>
+<status status="PASS" starttime="20240918 22:56:25.080" endtime="20240918 22:58:03.546"/>
 </suite>
 <statistics>
 <total>
