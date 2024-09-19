@@ -4,8 +4,10 @@ tasks:
     #     shell: python -m robot --report NONE --outputdir output --logtitle "Task log" automation/IFINCMS/IFINCMS.robot
     # IFINSYS CASES:
     #     shell: python -m robot --report NONE --outputdir output --logtitle "Task log" automation/IFINSYS/IFINSYS.robot
-    ANALYSOCR CASES:
-        shell: python -m robot --report NONE --outputdir output --logtitle "Task log" automation/analysocr/analysocr.robot
+    # ANALYSOCR CASES:
+    #     shell: python -m robot --report NONE --outputdir output --logtitle "Task log" automation/analysocr/analysocr.robot
+    CMS CASES:
+        shell: python -m robot --report NONE --outputdir output --logtitle "Task log" Automation/CMS/CMS.robot
 
 environmentConfigs:
     - environment_windows_amd64_freeze.yaml

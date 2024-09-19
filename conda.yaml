@@ -13,7 +13,6 @@ dependencies:
     - pip:
           - robotframework-browser==17.5.2 # https://github.com/MarketSquare/robotframework-browser/releases
           - rpaframework==27.7.0 # https://rpaframework.org/releasenotes.html
-          - robotframework-faker==5.0.0 # https://pypi.org/project/robotframework-faker/
           - robotframework-confluentkafkalibrary==2.4.0.post2 # https://pypi.org/project/robotframework-confluentkafkalibrary
           - robotframework-requests==0.9.7 # https://pypi.org/project/robotframework-confluentkafkalibrary
 
