@@ -1,15 +1,19 @@
 *** Settings ***
 Library    RPA.Excel.Files
 Library    OperatingSystem
+Library    Collections
 
 *** Keywords ***
 Insert Data Into Excel
-    [Arguments]    ${original_file}    ${working_file}    ${start_row}    @{data}
+    [Arguments]    ${original_file}    ${working_file}    ${start_row}    ${columns_to_fill}    @{data}
     Copy File    ${original_file}    ${working_file}
     Open Workbook    ${working_file}
     ${row}=    Set Variable    ${start_row}
-    FOR    ${i}    IN RANGE    0    ${data.__len__()}    5
-        @{row_data}    Create List    ${data}[${i}]    ${data}[${i+1}]    ${data}[${i+2}]    ${data}[${i+3}]    ${data}[${i+4}]
+    ${chunk_size}=    Convert To Integer    ${columns_to_fill}
+    ${data_length}=    Get Length    ${data}
+    FOR    ${i}    IN RANGE    0    ${data_length}    ${chunk_size}
+        ${end}=    Evaluate    min(${i} + ${chunk_size}, ${data_length})
+        @{row_data}=    Get Slice From List    ${data}    ${i}    ${end}
         Set Row Values    ${row}    @{row_data}
         ${row}=    Evaluate    ${row} + 1
     END
@@ -20,8 +24,8 @@ Insert Data Into Excel
 
 Set Row Values
     [Arguments]    ${row}    @{values}
-    Set Cell Value    ${row}    1    ${values}[0]
-    Set Cell Value    ${row}    2    ${values}[1]
-    Set Cell Value    ${row}    3    ${values}[2]
-    Set Cell Value    ${row}    4    ${values}[3]
-    Set Cell Value    ${row}    5    ${values}[4]
+    ${column}=    Set Variable    1
+    FOR    ${value}    IN    @{values}
+        Set Cell Value    ${row}    ${column}    ${value}
+        ${column}=    Evaluate    ${column} + 1
+    END
