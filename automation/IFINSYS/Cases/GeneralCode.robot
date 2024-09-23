@@ -3,9 +3,9 @@ Resource    Resources/Base/BaseKeywords.robot
 
 
 *** Keywords ***
-Login To IFINCMS
+Login To IFINBASE
     Open Browser & Login    Danu    Danu
-    Open Card    Client Management
+    Open Card    Base
 
 Navigate To General Code
     Open Sidebar Menu    Setting
