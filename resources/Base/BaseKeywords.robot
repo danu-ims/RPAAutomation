@@ -11,10 +11,24 @@ ${FirstRowData}            ${TableXpath}//tr[1]//td[2]//a
 ${FirstRowDataCheckbox}    ${TableXpath}//tr[1]//td[1]//a
 ${FirstRowDataEfDate}      ${TableXpath}//tr[1]//td[4]//a
 
+#Element Button Add
+${ElementButton1}    xpath=//button[contains(., "Add")]
+${ElementButton2}    xpath=//button[.//span[contains(text(), "Add")]]
+
 *** Keywords ***
 Click Add
-    Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
-    Click Element                    //button[.//span[contains(text(), "Add")]]
+    ${Status}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${ElementButton1}    timeout=5s
+
+    IF    ${Status}
+        Click Element    ${ElementButton1}
+    ELSE
+        Wait Until Element Is Visible    ${ElementButton2}    timeout=5s
+        Click Element    ${ElementButton2}
+    END
+
+# Click Add
+#     Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
+#     Click Element                    //button[.//span[contains(text(), "Add")]]
 
 Click Submit
     Wait Until Element Is Visible    //button[@type="submit"]
