@@ -13,4 +13,13 @@ Resource    resources/Base/ReadDataExcel.robot
 #    Add New General Code
 
 Excel
-    Read Excel Data
+    @{field_ids}=    Create List    username-field    email-field    password-field
+
+    # Call the Read Excel Data and Process keyword
+    Read Excel Data and Process    
+    ...                            file_path=files/excel/GeneralCode.xlsx    
+    ...                            sheet_name=Sheet1                         
+    ...                            start_row=2                               
+    ...                            columns_to_read=B, C, D                   
+    ...                            action_keyword=Input Data To Website
+    ...                            action_args=${field_ids}
