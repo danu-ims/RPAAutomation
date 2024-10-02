@@ -7,17 +7,24 @@ Library    RPA.Tables
 Library    String
 
 *** Keywords ***
-Read Excel Data
-   Open Workbook    files/excel/GeneralCode.xlsx
-   ${rows} =        Read Worksheet                  header=False    start=${3}
-   FOR              ${item}                         IN              @{rows}
+Read Excel Data and Process
 
-   Log    ${item['B']}
-   Log    ${item['C']}
-   Log    ${item['D']}
+    Create Webdriver                 Firefox
+    Open Browser                     ${BASEURL}
+    Maximize Browser Window
+    Wait Until Element Is Visible    id:UserName
 
-   END
-   Close Workbook
+
+    Open Workbook    files/excel/GeneralCode.xlsx
+    ${rows} =        Read Worksheet                  header=False    start=${3}
+    FOR              ${item}                         IN              @{rows}
+    Input Text       id:UserName                     ${item['B']}
+    Log              ${item['B'][1]}
+    Log              ${item['C']}
+    Log              ${item['D']}
+
+    END
+    Close Workbook
 
     # Open Workbook     files/excel/GeneralCode.xlsx
     # ${data}           Read Worksheet    Sheet1    range=B3:D9
