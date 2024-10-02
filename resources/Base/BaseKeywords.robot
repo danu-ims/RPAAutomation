@@ -34,9 +34,12 @@ Click Submit
     Wait Until Element Is Visible    //button[@type="submit"]
     Click Element                    //button[@type="submit"]
 
+# Click Back
+#     Wait Until Element Is Visible    //button[.//span[contains(text(), "Back")]]
+#     Click Element                    //button[.//span[contains(text(), "Back")]]
 Click Back
-    Wait Until Element Is Visible    //button[.//span[contains(text(), "Back")]]
-    Click Element                    //button[.//span[contains(text(), "Back")]]
+    Wait Until Element Is Clickable    //button[contains(@title, "Back")]
+    Click Element                      //button[contains(@title, "Back")]
 
 Click Change Status
     [Arguments]                      ${Status}
