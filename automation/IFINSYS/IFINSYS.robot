@@ -10,7 +10,7 @@ Login IFINSYS
 
 General Code
     Navigate To General Code
-    Add New General Code
+    # Add New General Code
     # Add New General Code Detail
     # Edit General Code
     # Edit General Code Detail
@@ -19,7 +19,7 @@ Excel
     @{field_ids}=    Create List    username-field    email-field    password-field
 
     # Call the Read Excel Data and Process keyword
-    Read Excel Data and Process    
+    # Read Excel Data and Process    
     # ...                            file_path=files/excel/GeneralCode.xlsx    
     # ...                            sheet_name=Sheet1                         
     # ...                            start_row=2                               
