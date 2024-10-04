@@ -9,7 +9,7 @@ Login To IFINSYS
 
 Navigate To General Code
     Open Sidebar Menu    Setting
-    Open Sidebar Menu    Menu
+    Open Sidebar Menu    General Code
     
     # Click Element        xpath=//label[@for='ModuleID' and contains(@class, 'rz-label')]/following::button[1]
     # Click Element        //tr[1]//button[normalize-space()='Select']
@@ -17,17 +17,17 @@ Navigate To General Code
     # Click Add
     # Click Lookup
 
-# Add New General Code
+Add New General Code
 
-#    Open Workbook    files/excel/GeneralCode.xlsx
-#    ${rows} =        Read Worksheet                  header=False    start=${3}
-#    FOR              ${item}                         IN              @{rows}
-#    Click Add
-#    Input Field      Code                            ${item['B']}
-#    Input Field      Description                     ${item['C']}
-#    Click Submit
-#    Click Back
+   Open Workbook    files/excel/GeneralCode.xlsx
+   ${rows} =        Read Worksheet                  header=False    start=${3}
+   FOR              ${item}                         IN              @{rows}
+   Click Add
+   Input Field      Code                            ${item['B']}
+   Input Field      Description                     ${item['C']}
+   Click Submit
+   Click Back
 
 
-#    END
-#    Close Workbook
+   END
+   Close Workbook
