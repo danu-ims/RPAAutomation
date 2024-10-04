@@ -10,7 +10,7 @@ Login IFINSYS
 
 General Code
     Navigate To General Code
-    # Add New General Code
+    Add New General Code
     # Add New General Code Detail
     # Edit General Code
     # Edit General Code Detail
