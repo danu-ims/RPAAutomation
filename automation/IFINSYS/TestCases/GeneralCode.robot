@@ -1,33 +1,106 @@
 *** Settings ***
-Resource    Resources/Base/BaseKeywords.robot
+Resource    resources/Base/BaseKeywords.robot
 
 
 *** Keywords ***
-Login To IFINSYS
-    Open Browser & Login    Danu      Danu
-    Open Card               Config
 
 Navigate To General Code
     Open Sidebar Menu    Setting
     Open Sidebar Menu    General Code
-    
+
     # Click Element        xpath=//label[@for='ModuleID' and contains(@class, 'rz-label')]/following::button[1]
     # Click Element        //tr[1]//button[normalize-space()='Select']
 
     # Click Add
     # Click Lookup
-
 Add New General Code
+    Open Workbook          files/excel/GeneralCode.xlsx
+    ${rows} =              Read Worksheet                  header=True    start=2
+    ${current_parent} =    Set Variable                    ${EMPTY}
 
-   Open Workbook    files/excel/GeneralCode.xlsx
-   ${rows} =        Read Worksheet                  header=False    start=${3}
-   FOR              ${item}                         IN              @{rows}
-   Click Add
-   Input Field      Code                            ${item['B']}
-   Input Field      Description                     ${item['C']}
-   Click Submit
-   Click Back
+    FOR                     ${item}         IN                                 @{rows}
+    ${code} =               Set Variable    ${item['Code']}
+    ${description} =        Set Variable    ${item['Description']}
+    ${is_editable} =        Set Variable    ${item['IsEditable']}
+    ${sub_code} =           Set Variable    ${item['General Sub Code']}
+    ${sub_description} =    Set Variable    ${item['Sub Code Description']}
+    ${order_key} =          Set Variable    ${item['OrderKey']}
+
+    # Check for new parent entry
+    IF                               "${code}" != "${EMPTY}" and "${code}" != "${current_parent}" and "${code}" != "None"
+    Run Keyword If                   "${current_parent}" != "${EMPTY}"                                                       Click Back
+    Click Add
+    Wait Until Element Is Visible    id:ifin-form-txt-code                                                                   timeout=2
+    Input Field                      Code                                                                                    ${code}
+    Input Field                      Description                                                                             ${description}
+    Click Submit
+    ${current_parent} =              Set Variable                                                                            ${code}
+    END
+
+        # Check for sub-code entry
+    IF                               "${sub_code}" != "${EMPTY}" and "${sub_code}" != "None"
+    Click Add
+    Wait Until Element Is Visible    id:ifin-form-txt-code                                      timeout=2
+    Input Field                      Code                                                       ${sub_code}
+    Input Field                      Description                                                ${sub_description}
+    Input Field                      OrderKey                                                   ${order_key}
+    Click Submit
+    END
+
+        # Go back to the main page after adding each entry
+    Click Back
+    END
+    Close Workbook
+# Add New General Code
+
+#    Open Workbook    files/excel/GeneralCode.xlsx
+#    ${rows} =        Read Worksheet                  header=False    start=${3}
+#    FOR              ${item}                         IN              @{rows}       
+
+#    ${RowB}=    Set Variable    ${item['B']}
+#    ${RowC}=    Set Variable    ${item['C']}
+
+#    IF    "${RowB}" == "" or "${RowB}" == None and "${RowC}" == "" or "${RowC}" == None
+
+#    Click Add
+#    Wait Until Element Is Visible    id:ifin-form-txt-code    timeout=10
+#    Input Field                      Code                     ${item['D']}
+#    Input Field                      Description              ${item['E']}
+#    Input Field                      OrderKey                 ${item['F']}
+#    Click Submit
+#    Click Back
+
+#    ELSE
+
+#    Click Add
+#    Wait Until Element Is Visible    id:ifin-form-txt-code    timeout=10
+#    Input Field                      Code                     ${RowB}
+#    Input Field                      Description              ${RowC}
+#    Click Submit
+#    Click Add
+#    Wait Until Element Is Visible    ifin-form-txt-code       timeout=10
+#    Input Field                      Code                     ${item['D']}
+#    Input Field                      Description              ${item['E']}
+#    Input Field                      OrderKey                 ${item['F']}
+#    Click Submit
+#    Click Back
+#    END
+
+#    END
+#    Close Workbook
 
 
-   END
-   Close Workbook
+# Add New General Code
+
+#    Open Workbook    files/excel/GeneralCode.xlsx
+#    ${rows} =        Read Worksheet                  header=False    start=${3}
+#    FOR              ${item}                         IN              @{rows}
+#    Click Add
+#    Input Field      Code                            ${item['B']}
+#    Input Field      Description                     ${item['C']}
+#    Click Submit
+#    Click Back
+
+
+#    END
+#    Close Workbook

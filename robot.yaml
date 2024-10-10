@@ -1,9 +1,9 @@
 tasks:
     # Task names here are used when executing the bots, so renaming these is recommended.
     # IFINCMS CASES:
-    #     shell: python -m robot --report NONE --outputdir output --logtitle "Task log" Automation/IFINCMS/IFINCMS.robot
+    #     shell: python -m robot --report NONE --outputdir output --logtitle "Task log" automation/IFINCMS/IFINCMS.robot
     IFINSYS CASES:
-        shell: python -m robot --report NONE --outputdir output --logtitle "Task log" Automation/IFINSYS/IFINSYS.robot
+        shell: python -m robot --report NONE --outputdir output --logtitle "Task log" automation/IFINSYS/IFINSYS.robot
 
 environmentConfigs:
     - environment_windows_amd64_freeze.yaml

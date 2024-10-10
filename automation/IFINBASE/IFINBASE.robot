@@ -1,7 +1,7 @@
 *** Settings ***
-Resource   Automation/IFINBASE/TestCases/GeneralCode.robot
-Resource   Automation/IFINBASE/TestCases/Benchmark.robot
-Resource   Automation/IFINBASE/TestCases/OJKReference.robot
+Resource   automation/IFINBASE/TestCases/GeneralCode.robot
+Resource   automation/IFINBASE/TestCases/Benchmark.robot
+Resource   automation/IFINBASE/TestCases/OJKReference.robot
 
 
 *** Test Cases ***
