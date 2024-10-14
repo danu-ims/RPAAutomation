@@ -1,29 +1,30 @@
-project3
+RPAAutomation
 ├─ automation
-│  ├─ analysocr
-│  │  ├─ analysocr.robot
-│  │  └─ cases
+│  ├─ IFINBASE
+│  │  ├─ IFINBASE.robot
+│  │  ├─ TaskCases
+│  │  └─ TestCases
+│  │     ├─ Benchmark.robot
 │  │     ├─ GeneralCode.robot
-│  │     ├─ GeneralSubCode.robot
-│  │     └─ MasterDashboard.robot
-│  ├─ IFINCMS
-│  │  ├─ cases
-│  │  │  ├─ Authentication
-│  │  │  │  ├─ login.robot
-│  │  │  │  └─ logout.robot
-│  │  │  ├─ GeneralCode.robot
-│  │  │  ├─ GeneralSubCode.robot
-│  │  │  └─ MasterDashboard.robot
-│  │  └─ IFINCMS.robot
+│  │     ├─ GeneralCodea.robot
+│  │     └─ OJKReference.robot
+│  ├─ IFINLOS
+│  │  └─ GeneralCode.robot
 │  └─ IFINSYS
-│     ├─ cases
-│     │  ├─ Authentication
-│     │  │  ├─ login.robot
-│     │  │  └─ logout.robot
-│     │  └─ Branch.robot
-│     └─ IFINSYS.robot
+│     ├─ IFINSYS.robot
+│     └─ TestCases
+│        ├─ GeneralCode.robot
+│        ├─ Login.robot
+│        └─ Menu.robot
 ├─ conda.yaml
 ├─ files
+│  ├─ excel
+│  │  ├─ GeneralCode - Copy (2).xlsx
+│  │  ├─ GeneralCode - Copy.xlsx
+│  │  ├─ GeneralCode.xlsx
+│  │  ├─ GeneralCode2.xlsx
+│  │  ├─ GeneralCodea.xlsx
+│  │  └─ ~$GeneralCode.xlsx
 │  └─ fileocr
 │     ├─ ahu
 │     │  ├─ AHU - BCI 27062024.pdf
@@ -47,6 +48,7 @@ project3
 │        │  └─ OCBC_PERSONAL.pdf
 │        └─ permatapersonal
 │           └─ PERMATA_PERSONAL.pdf
+├─ geckodriver-1.log
 ├─ interactive_console_output.xml
 ├─ LICENSE
 ├─ log.html
@@ -60,35 +62,22 @@ project3
 │  ├─ stderr.log
 │  └─ stdout.log
 ├─ output.xml
+├─ project-hierarchy.txt
 ├─ rcc.exe
 ├─ README.md
 ├─ report.html
 ├─ resources
-│  ├─ keywords
-│  │  ├─ AuthenticationKeyword.robot
+│  ├─ Base
 │  │  ├─ BaseKeywords.robot
-│  │  ├─ modules
-│  │  │  ├─ analysocr
-│  │  │  │  └─ OpenAnalysOCRKeyword.robot
-│  │  │  ├─ IFINCMS
-│  │  │  │  ├─ OpenIFINCMSKeyword.Robot
-│  │  │  │  └─ SidenavIFINCMSKeyword.robot
-│  │  │  ├─ IFINSYS
-│  │  │  │  ├─ OpenIFINSYSKeyword.robot
-│  │  │  │  └─ SidenavIFINSYSKeyword.robot
-│  │  │  └─ ModuleKeywords.robot
-│  │  └─ OpenCardModulesKeyword.robot
-│  └─ variables
-│     └─ BaseVariables.robot
-├─ result
-│  ├─ log.html
-│  ├─ output.xml
-│  └─ report.html
+│  │  ├─ BaseVariables.robot
+│  │  ├─ InsertDataToExcel.robot
+│  │  └─ ReadDataExcel.robot
+│  └─ CustomLib
+│     ├─ InputField.py
+│     └─ UploadFile.py
 ├─ robot.yaml
 ├─ Run Test.bat
-├─ trigger
-│  ├─ IFINBASE
-│  └─ IFINSYS
-│     ├─ eventtrigger
-│     │  └─ ConsumerMessageKafka.py
-│     └─ timetrigger
+└─ trigger
+   └─ IFINSYS
+      └─ eventtrigger
+         └─ ConsumerMessageKafka.py

@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    Resources/Base/BaseKeywords.robot
+Resource    resources/Base/BaseKeywords.robot
 
 
 *** Keywords ***
