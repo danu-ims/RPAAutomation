@@ -17,19 +17,19 @@ ${ElementButton1}    xpath=//button[contains(., "Add")]
 ${ElementButton2}    xpath=//button[.//span[contains(text(), "Add")]]
 
 *** Keywords ***
-Click Add
-    ${Status}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${ElementButton1}    timeout=5s
-
-    IF                               ${Status}
-    Click Element                    ${ElementButton1}
-    ELSE
-    Wait Until Element Is Visible    ${ElementButton2}    timeout=5s
-    Click Element                    ${ElementButton2}
-    END
-
 # Click Add
-#    Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
-#    Click Element                    //button[.//span[contains(text(), "Add")]]
+#    ${Status}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${ElementButton1}    timeout=5s
+
+#    IF                               ${Status}
+#    Click Element                    ${ElementButton1}
+#    ELSE
+#    Wait Until Element Is Visible    ${ElementButton2}    timeout=5s
+#    Click Element                    ${ElementButton2}
+#    END
+
+Click Add
+    Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
+    Click Element                    //button[.//span[contains(text(), "Add")]]
 
 Click Submit
     Wait Until Element Is Visible    //button[@type="submit"]
@@ -150,7 +150,17 @@ Open Wizard
 
 
 
-
+Input Excel
+    Open Workbook     files/excel/GeneralCode.xlsx
+    ${rows} =         Read Worksheet                  header=False    start=${3}
+    FOR               ${item}                         IN              @{rows}
+    Click Add
+    Input Field       Code                            ${item['B']}
+    Input Field       Description                     ${item['C']}
+    Click Submit
+    Click Back
+    END
+    Close Workbook
 
 
 Logout
