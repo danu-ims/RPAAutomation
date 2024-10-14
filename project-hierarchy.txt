@@ -1,177 +1,4 @@
-RPAautomation
-├─ .git
-│  ├─ COMMIT_EDITMSG
-│  ├─ config
-│  ├─ description
-│  ├─ FETCH_HEAD
-│  ├─ HEAD
-│  ├─ hooks
-│  │  ├─ applypatch-msg.sample
-│  │  ├─ commit-msg.sample
-│  │  ├─ fsmonitor-watchman.sample
-│  │  ├─ post-update.sample
-│  │  ├─ pre-applypatch.sample
-│  │  ├─ pre-commit.sample
-│  │  ├─ pre-merge-commit.sample
-│  │  ├─ pre-push.sample
-│  │  ├─ pre-rebase.sample
-│  │  ├─ pre-receive.sample
-│  │  ├─ prepare-commit-msg.sample
-│  │  ├─ push-to-checkout.sample
-│  │  ├─ sendemail-validate.sample
-│  │  └─ update.sample
-│  ├─ index
-│  ├─ info
-│  │  └─ exclude
-│  ├─ logs
-│  │  ├─ HEAD
-│  │  └─ refs
-│  │     ├─ heads
-│  │     │  ├─ main
-│  │     │  └─ office
-│  │     └─ remotes
-│  │        └─ origin
-│  │           ├─ HEAD
-│  │           ├─ main
-│  │           └─ office
-│  ├─ objects
-│  │  ├─ 04
-│  │  │  ├─ d20e7bfeb33e2b187d083fb516f173a02bc165
-│  │  │  └─ f94d9f7c8910e35fd9ab8e1dacd68132ce1c72
-│  │  ├─ 06
-│  │  │  └─ 191c457a185c4de19e9f4459181ed3976b5570
-│  │  ├─ 07
-│  │  │  └─ 0c881c27ed0338987c4d2ac4d05135c9cb3e5d
-│  │  ├─ 09
-│  │  │  └─ 4b3a57471541a6aab549e02018ae07d644f829
-│  │  ├─ 0a
-│  │  │  ├─ 74b4a93300868537331238a70ccc1dc52de2e4
-│  │  │  └─ e893f1ef3e72f4171ce3275f3bb7b87f90ffa8
-│  │  ├─ 18
-│  │  │  └─ 6996fb4f6da5c88a243e82f5c393ae8e38c05f
-│  │  ├─ 19
-│  │  │  └─ 82497c4e6914680d3bfc54da1e1afa0617d539
-│  │  ├─ 1e
-│  │  │  └─ 19cda6c3b2a2fc37de40536b811261cca59a78
-│  │  ├─ 23
-│  │  │  └─ 0bfbad5183cf6beafbb9d2625ab7c8e718716e
-│  │  ├─ 24
-│  │  │  └─ 677c5015b5e137753d60a99ac85b573899a49c
-│  │  ├─ 25
-│  │  │  └─ 8a23dec4dd7fab29d7760e13c87c5dc0dd8f3a
-│  │  ├─ 28
-│  │  │  ├─ 1f0fcbcda805acb66aa8293db4f0d329af0c07
-│  │  │  └─ 67f322c7b77f5522cf96e0f85a2e94335c5d7f
-│  │  ├─ 38
-│  │  │  └─ e1ab6a50944dbc7881a677df139b59b23c27ae
-│  │  ├─ 3c
-│  │  │  └─ 1454802ce8b35051b374049e5474ec679cc7f0
-│  │  ├─ 3d
-│  │  │  └─ 3e466d88840dce471a41edc9aaebe9aad0b7d3
-│  │  ├─ 56
-│  │  │  └─ 7584352b8b44de21bd6d37737c84535c6be1d5
-│  │  ├─ 61
-│  │  │  ├─ 1486a054e24ff68c2eac2435999289181da4a1
-│  │  │  └─ 25cd62c6f1e10261c9cb8fe8ce0d8194dc406f
-│  │  ├─ 62
-│  │  │  └─ 98f828f105a13073419ae8d7013ee27241b83d
-│  │  ├─ 6a
-│  │  │  └─ 962290964e025835d7636a5455b8bca3de4937
-│  │  ├─ 6d
-│  │  │  └─ 6107acb86007aa8c0f4516bc1e77a2b468bcff
-│  │  ├─ 71
-│  │  │  └─ 1980e4bc5b13a298434ba3d6cdd0458ece8217
-│  │  ├─ 73
-│  │  │  └─ 7c5211bd28835d299162fb2ffd94608fc389b3
-│  │  ├─ 79
-│  │  │  └─ bf0b38648e3cb5a35b9059efef9c9be0060fb8
-│  │  ├─ 7b
-│  │  │  └─ 1566d0d590935dda221de34c0d1e4d3e3872a4
-│  │  ├─ 84
-│  │  │  └─ c765115832b64d13c23d02825ce7126b74e1f8
-│  │  ├─ 88
-│  │  │  └─ 082f9312c2df7e604d7017745e1e570e063cee
-│  │  ├─ 8b
-│  │  │  └─ 8acc9def800d5fb512affdf759025f1c530429
-│  │  ├─ 91
-│  │  │  └─ 6790624b1f124cb40a70944c44cb3ed0ccf8ce
-│  │  ├─ 93
-│  │  │  ├─ 48f5ae78cac5f86fa07f3d857dd842cbae6c8f
-│  │  │  └─ 4aa46133b270179aeb66fcad37fab1bbb3d906
-│  │  ├─ 96
-│  │  │  └─ 3c4d3f6e5b7086f0e1deb5481c41cdb58d0f1a
-│  │  ├─ 9a
-│  │  │  └─ 7e841aa2d1fe7f4d68545558c1ebd37ba2a8b8
-│  │  ├─ 9c
-│  │  │  └─ 3b7654c09c48e405d2067c468cb17395f79a99
-│  │  ├─ 9f
-│  │  │  └─ 1366a668a29dfd4c7cfa35e91ebb6e582f29e2
-│  │  ├─ a0
-│  │  │  └─ de4416e41972272f2cf119e5edbeea07578867
-│  │  ├─ a1
-│  │  │  └─ 72ce97173bc88e40165ac43e56f9dc8cbf483e
-│  │  ├─ a4
-│  │  │  └─ a39f0f0a19a8279d88482e94b72fdc906785bc
-│  │  ├─ a7
-│  │  │  └─ e29e10b0550e92caa03e77b6f4458ab556161e
-│  │  ├─ ac
-│  │  │  └─ 2935f336cbb7ef4da75d9bb6c2e05cf7d5e01b
-│  │  ├─ b2
-│  │  │  └─ a7e94b2d947e3bff26dc2a2b97fae50f79436f
-│  │  ├─ b8
-│  │  │  └─ 5a1aa233c501f1d42db5514484e7cd21f95ffb
-│  │  ├─ bf
-│  │  │  └─ f960c7190faff50dbf6c1eef19b8d2df5a9d66
-│  │  ├─ c5
-│  │  │  └─ ef88ac5f20726e853e098d135124d85e9d9552
-│  │  ├─ c8
-│  │  │  ├─ 61687c0a191a11ea96e7081bf9bc83eb8aca5c
-│  │  │  └─ 926f50f218d7620dcd371d24459e174bf77f77
-│  │  ├─ c9
-│  │  │  └─ df7652b56f89ac4f7885bad92ca9611a9d6b51
-│  │  ├─ cd
-│  │  │  └─ 8eede9461030d4284f089f07898520e34fe92d
-│  │  ├─ d6
-│  │  │  └─ c9b27c9bcb757a36e134c668e86850e315bda4
-│  │  ├─ d8
-│  │  │  └─ a90bb4bd42d5b316b3dda9d60e688ca12104d1
-│  │  ├─ e5
-│  │  │  └─ e2c6b4d638f7fc5d417162448d32de650470bb
-│  │  ├─ e6
-│  │  │  └─ b79e389501e53d7ad0ff665caadf8c82f0a71e
-│  │  ├─ ed
-│  │  │  ├─ 95aa2545f768c7f6fa9cec75ee9030f92a67bf
-│  │  │  └─ f3f021a0e68175ac3a0ab5aab432107baea1ab
-│  │  ├─ ef
-│  │  │  ├─ 1e31373f7b1cb298af7f8cbd7d823d518bd843
-│  │  │  └─ 6aec61a6b56d0082323ec1d85a507634d0fea2
-│  │  ├─ f0
-│  │  │  └─ 206c8d2f40ba1ae1b82b7e6fe97240b4354a0f
-│  │  ├─ f4
-│  │  │  ├─ 262ca1288daa64ebf3b390d9e7bc1ff5067393
-│  │  │  └─ d8ab4abed3582bfba46e6399c8da6a9fea8cac
-│  │  ├─ f7
-│  │  │  └─ c20837b9635b3ddeb1d7192c29d51d0f7860aa
-│  │  ├─ ff
-│  │  │  └─ 70a92fb844f8cacf55c04a949b83f3c275271c
-│  │  ├─ info
-│  │  └─ pack
-│  │     ├─ pack-cb4c9d3c2597f0fa61ac67b094246a3774e48431.idx
-│  │     ├─ pack-cb4c9d3c2597f0fa61ac67b094246a3774e48431.pack
-│  │     └─ pack-cb4c9d3c2597f0fa61ac67b094246a3774e48431.rev
-│  ├─ ORIG_HEAD
-│  ├─ packed-refs
-│  └─ refs
-│     ├─ heads
-│     │  ├─ main
-│     │  └─ office
-│     ├─ remotes
-│     │  └─ origin
-│     │     ├─ HEAD
-│     │     ├─ main
-│     │     └─ office
-│     └─ tags
-├─ .gitignore
+RPAAutomation
 ├─ automation
 │  ├─ IFINBASE
 │  │  ├─ IFINBASE.robot
@@ -179,17 +6,25 @@ RPAautomation
 │  │  └─ TestCases
 │  │     ├─ Benchmark.robot
 │  │     ├─ GeneralCode.robot
+│  │     ├─ GeneralCodea.robot
 │  │     └─ OJKReference.robot
+│  ├─ IFINLOS
+│  │  └─ GeneralCode.robot
 │  └─ IFINSYS
 │     ├─ IFINSYS.robot
 │     └─ TestCases
-│        └─ GeneralCode.robot
+│        ├─ GeneralCode.robot
+│        ├─ Login.robot
+│        └─ Menu.robot
 ├─ conda.yaml
 ├─ files
 │  ├─ excel
+│  │  ├─ GeneralCode - Copy (2).xlsx
+│  │  ├─ GeneralCode - Copy.xlsx
 │  │  ├─ GeneralCode.xlsx
-│  │  ├─ GeneralCosde.xlsx
-│  │  └─ SysGeneralSubCode.xlsx
+│  │  ├─ GeneralCode2.xlsx
+│  │  ├─ GeneralCodea.xlsx
+│  │  └─ ~$GeneralCode.xlsx
 │  └─ fileocr
 │     ├─ ahu
 │     │  ├─ AHU - BCI 27062024.pdf
@@ -220,63 +55,10 @@ RPAautomation
 ├─ output
 │  ├─ environment_windows_amd64_freeze.yaml
 │  ├─ geckodriver-1.log
-│  ├─ geckodriver-10.log
-│  ├─ geckodriver-11.log
-│  ├─ geckodriver-12.log
-│  ├─ geckodriver-13.log
-│  ├─ geckodriver-14.log
-│  ├─ geckodriver-15.log
-│  ├─ geckodriver-16.log
-│  ├─ geckodriver-17.log
-│  ├─ geckodriver-18.log
-│  ├─ geckodriver-19.log
-│  ├─ geckodriver-2.log
-│  ├─ geckodriver-20.log
-│  ├─ geckodriver-21.log
-│  ├─ geckodriver-22.log
-│  ├─ geckodriver-23.log
-│  ├─ geckodriver-24.log
-│  ├─ geckodriver-25.log
-│  ├─ geckodriver-26.log
-│  ├─ geckodriver-27.log
-│  ├─ geckodriver-28.log
-│  ├─ geckodriver-29.log
-│  ├─ geckodriver-3.log
-│  ├─ geckodriver-30.log
-│  ├─ geckodriver-31.log
-│  ├─ geckodriver-32.log
-│  ├─ geckodriver-33.log
-│  ├─ geckodriver-34.log
-│  ├─ geckodriver-35.log
-│  ├─ geckodriver-36.log
-│  ├─ geckodriver-37.log
-│  ├─ geckodriver-38.log
-│  ├─ geckodriver-39.log
-│  ├─ geckodriver-4.log
-│  ├─ geckodriver-40.log
-│  ├─ geckodriver-41.log
-│  ├─ geckodriver-42.log
-│  ├─ geckodriver-43.log
-│  ├─ geckodriver-5.log
-│  ├─ geckodriver-6.log
-│  ├─ geckodriver-7.log
-│  ├─ geckodriver-8.log
-│  ├─ geckodriver-9.log
 │  ├─ journal.run
 │  ├─ log.html
 │  ├─ output.xml
 │  ├─ selenium-screenshot-1.png
-│  ├─ selenium-screenshot-10.png
-│  ├─ selenium-screenshot-11.png
-│  ├─ selenium-screenshot-12.png
-│  ├─ selenium-screenshot-2.png
-│  ├─ selenium-screenshot-3.png
-│  ├─ selenium-screenshot-4.png
-│  ├─ selenium-screenshot-5.png
-│  ├─ selenium-screenshot-6.png
-│  ├─ selenium-screenshot-7.png
-│  ├─ selenium-screenshot-8.png
-│  ├─ selenium-screenshot-9.png
 │  ├─ stderr.log
 │  └─ stdout.log
 ├─ output.xml

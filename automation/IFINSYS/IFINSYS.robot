@@ -4,9 +4,6 @@ Resource    automation/IFINSYS/TestCases/Login.robot
 Resource    automation/IFINSYS/TestCases/Menu.robot
 Resource    resources/Base/ReadDataExcel.robot
 
-*** Variables ***
-${EXCEL_FILE_PATH}    files/excel/GeneralCode.xlsx
-
 *** Test Cases ***
 Login IFINSYS
 
@@ -15,7 +12,6 @@ Login IFINSYS
     Open Card               Config
 General Code
     Navigate To General Code
-    # Add New General Code
     Logout
 
 # Data Excel

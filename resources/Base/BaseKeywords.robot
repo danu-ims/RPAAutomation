@@ -42,6 +42,13 @@ Click Back
     Wait Until Element Is Visible    //button[@title='Back']
     Click Element                    //button[@title='Back']
 
+Click Active Status
+    Wait Until Element Is Visible    id:ifin-btn-activate
+    Click Element                    id:ifin-btn-activate
+
+Click Editable Status
+    Wait Until Element Is Visible    id:ifin-btn-editable
+    Click Element                    id:ifin-btn-editable
 
 Click Change Status
     [Arguments]                      ${Status}
