@@ -103,11 +103,11 @@ Open Browser & Login
     Open Browser               ${BASEURL}
     Maximize Browser Window
 
-    Wait Until Element Is Visible    id:UserName
-    Wait Until Element Is Visible    id:Password
+    Wait Until Element Is Visible    name:UserName
+    Wait Until Element Is Visible    name:Password
 
-    Input Text        id:UserName                 ${UserName}
-    Input Password    id:Password                 ${Password}
+    Input Text        name:UserName               ${UserName}
+    Input Password    name:Password               ${Password}
     Click Button      //button[@type="submit"]
 
 Open Card
@@ -146,3 +146,6 @@ Open Wizard
 
 
 
+Logout
+    Click Element    id:ifin-header-profile-photo
+    Click Element    //span[(contains(text(), "Logout"))]

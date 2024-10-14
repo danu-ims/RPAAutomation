@@ -15,7 +15,8 @@ Login IFINSYS
     Open Card               Config
 General Code
     Navigate To General Code
-    Add New General Code
+    # Add New General Code
+    Logout
 
 # Data Excel
 #    Open Workbook    files/excel/GeneralCode.xlsx
