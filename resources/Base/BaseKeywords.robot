@@ -17,19 +17,19 @@ ${ElementButton1}    xpath=//button[contains(., "Add")]
 ${ElementButton2}    xpath=//button[.//span[contains(text(), "Add")]]
 
 *** Keywords ***
-# Click Add
-#    ${Status}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${ElementButton1}    timeout=5s
-
-#    IF                               ${Status}
-#    Click Element                    ${ElementButton1}
-#    ELSE
-#    Wait Until Element Is Visible    ${ElementButton2}    timeout=5s
-#    Click Element                    ${ElementButton2}
-#    END
-
 Click Add
-    Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
-    Click Element                    //button[.//span[contains(text(), "Add")]]
+    ${Status}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${ElementButton1}    timeout=5s
+
+    IF                               ${Status}
+    Click Element                    ${ElementButton1}
+    ELSE
+    Wait Until Element Is Visible    ${ElementButton2}    timeout=5s
+    Click Element                    ${ElementButton2}
+    END
+
+# Click Add
+#    Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
+#    Click Element                    //button[.//span[contains(text(), "Add")]]
 
 Click Submit
     Wait Until Element Is Visible    //button[@type="submit"]
@@ -43,8 +43,8 @@ Click Back
     Click Element                    //button[@title='Back']
 
 Click Active Status
-    Wait Until Element Is Visible    id:ifin-btn-activate
-    Click Element                    id:ifin-btn-activate
+    Wait Until Element Is Visible    id:ifin-btn-active
+    Click Element                    id:ifin-btn-active
 
 Click Editable Status
     Wait Until Element Is Visible    id:ifin-btn-editable
@@ -95,11 +95,85 @@ Input Second Field
     Wait Until Element Is Visible    //input[@name="${Field}"]
     Input Text                       //input[@name="${Field}"]    ${Value}
 
+
+
+
+Input From Excel
+    [Arguments]    ${file_path}    ${start_row}    @{fields}
+
+    Open Workbook    ${file_path}
+    ${rows}=         Read Worksheet    header=False    start=${start_row}
+
+    FOR                  ${item}                            IN          @{rows}
+    Click Add
+    FOR                  ${field}                           IN          @{fields}
+    Log                  Field: ${field}
+    ${column_letter}=    Get From Dictionary                ${field}    column
+    Log                  Column Letter: ${column_letter}
+    ${field_name}=       Get From Dictionary                ${field}    name
+    ${value}=            Get From Dictionary                ${item}     ${column_letter}
+
+    Log               Inputting value: ${value} into field: ${field_name}
+    Run Keyword If    "${field_name}" != "IsEditable" and "${field_name}" != "IsActive" and "${field_name}" != "IsSpOverride"    Input Text    ${field_name}    ${value}
+    END
+
+    # Run Keyword If    '${field_name}' == 'IsSpOverride' and '${value}' != '1'    Click Element    class=rz-switch-circle
+
+    Click Submit
+
+    Run Keyword If    "${field_name}" == "IsEditable" and ${value} != 1    Click Editable Status
+    Run Keyword If    "${field_name}" == "IsActive" and ${value} != 1      Click Active Status
+
+    Click Back
+    END
+
+    Close Workbook
+
+
+
+
+    # Handle conditional clicks inside the field loop
+    # IF                     '${field_name}' == 'IsActive'
+    # IF                     '${value}' == '1'
+    # Click Active Status
+    # END
+    # END
+
+    # IF                       '${field_name}' == 'IsEditable'
+    # IF                       '${value}' == '1'
+    # Click Editable Status
+    # END
+    # END
+
+
+
+
+
+
+    # [Arguments]         ${file_path}           ${start_row}                @{fields}
+    # Open Workbook       ${file_path}
+    # ${rows}=            Read Worksheet         header=False                start=${start_row}
+    # FOR                 ${item}                IN                          @{rows}
+    # Click Add
+    # FOR                 ${field}               IN                          @{fields}
+    # ${column_index}=    Get From Dictionary    ${field}                    column
+    # ${field_name}=      Get From Dictionary    ${field}                    name
+    # Input Field         ${field_name}          ${item[${column_index}]}
+    # END
+    # Click Submit
+    # Click Back
+    # END
+    # Close Workbook
+
+
+
+
 # Input Field
 #    [Arguments]       ${Field}                         ${Value}
 #    ${is_visible}=    Wait Until Element Is Visible    //input[@name="${Field}" and contains(@class, 'rz-textbox rz-state-empty')]    timeout=5                    
 #    Run Keyword If    '${is_visible}' == 'False'       Input Text                                                                     //input[@name="${Field}"]    ${Value}    ELSE    Input Text    //input[@name="${Field}" and contains(@class, 'rz-textbox rz-state-empty')]    ${Value}
 #endregion
+
 
 
 
@@ -150,19 +224,11 @@ Open Wizard
 
 
 
-Input Excel
-    Open Workbook     files/excel/GeneralCode.xlsx
-    ${rows} =         Read Worksheet                  header=False    start=${3}
-    FOR               ${item}                         IN              @{rows}
-    Click Add
-    Input Field       Code                            ${item['B']}
-    Input Field       Description                     ${item['C']}
-    Click Submit
-    Click Back
-    END
-    Close Workbook
+
 
 
 Logout
     Click Element    id:ifin-header-profile-photo
     Click Element    //span[(contains(text(), "Logout"))]
+
+
