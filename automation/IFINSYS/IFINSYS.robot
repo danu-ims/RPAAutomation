@@ -1,4 +1,5 @@
 *** Settings ***
+Resource    automation/IFINSYS/TestCases/Branch.robot
 Resource    automation/IFINSYS/TestCases/GeneralCode.robot
 Resource    automation/IFINSYS/TestCases/Login.robot
 Resource    automation/IFINSYS/TestCases/Menu.robot
@@ -8,11 +9,14 @@ Resource    resources/Base/ReadDataExcel.robot
 Login IFINSYS
 
     [Setup]                 Set Selenium Speed    0.2 seconds
-    Open Browser & Login    Yaqi                  Yaqi
+    Open Browser & Login    Danu                  Danu
     Open Card               Config
-General Code
-    Navigate To General Code
-    Logout
+Branch
+    Navigate To Branch
+    # Click Date Picker
+# General Code
+#    Navigate To General Code
+#    Logout
 
 # Data Excel
 #    Open Workbook    files/excel/GeneralCode.xlsx
