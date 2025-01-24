@@ -2,6 +2,7 @@
 Library      SeleniumLibrary
 Library      RPA.Excel.Files
 Library      OperatingSystem
+Library      RPA.Excel
 Library      RPA.Tables
 Library      DateTime
 Library      BuiltIn

@@ -106,13 +106,20 @@ Add New Branch
     Click Add
     Click Lookup With Search    DocTypeID                                                          ${DocumentType}
     Input Field                 DocNo                                                              ${DocumentNo}
-    Click Date Picker           ExpDate                                                            ${ExpiredDate}      1
     Click Date Picker           EffDate                                                            ${EffectiveDate}    1
-
+    Click Date Picker           ExpDate                                                            ${ExpiredDate}      1
+   
     Click Submit
-    END
-
-    Open Wizard       Branch
     Click Back
+
+    END
+    # Click Back
+    # Open Wizard    Branch
+    # Click Sidebar Toogle
+    # Open To Edit Data
+    # Click Back
+    
+    # Click Back    
+
     END
     Close Workbook

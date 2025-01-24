@@ -13,6 +13,9 @@ Login IFINSYS
     Open Card               Config
 Branch
     Navigate To Branch
+
+
+    
     # Click Date Picker
 # General Code
 #    Navigate To General Code

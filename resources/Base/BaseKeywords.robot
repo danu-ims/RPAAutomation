@@ -40,6 +40,10 @@ Click Submit
 #    Wait Until Element Is Visible    //button[.//span[contains(text(), "Back")]]
 #    Click Element                    //button[.//span[contains(text(), "Back")]]
 
+Click Sidebar Toogle
+    Wait Until Element Is Visible    //div[@class='sidebar-toggle']
+    Click Element                    //div[@class='sidebar-toggle']
+
 Click Back
     Wait Until Element Is Visible    //button[@title='Back']
     Click Element                    //button[@title='Back']
@@ -139,9 +143,15 @@ Click DDL
 # region input fied
 
 Input Field
-    [Arguments]    ${Field}                        ${Value}
-    ${result}=     Run Keyword And Ignore Error    Input First Field     ${Field}    ${Value}
-    IF             '${result}[0]' == 'FAIL'        Input Second Field    ${Field}    ${Value}
+    [Arguments]    ${Field}    ${Value}
+    ${result}=     Run Keyword And Ignore Error    Input First Field    ${Field}    ${Value}
+    IF             ${result}[0] == 'FAIL'
+        ${result}=     Run Keyword And Ignore Error    Input Second Field    ${Field}    ${Value}
+    END
+    IF             ${result}[0] == 'FAIL'
+        ${result}=     Run Keyword And Ignore Error    Click Date Picker    ${Field}    ${Value}
+    END
+    
 
 Input First Field
     [Arguments]                      ${Field}                                                                       ${Value}
@@ -153,10 +163,15 @@ Input Second Field
     Wait Until Element Is Visible    //input[@name="${Field}"]
     Input Text                       //input[@name="${Field}"]    ${Value}
 
-Input DatePicker
-    [Arguments]                      ${Field}                     ${Value}
-    Wait Until Element Is Visible    //input[@name="${Field}"]
-    Input Text                       //input[@name="${Field}"]    ${Value}
+# Input Date
+#     [Arguments]                      ${Field}                     ${Value}
+#     Click Date Picker               ${Value}
+
+
+# Input DatePicker
+#     [Arguments]                      ${Field}                     ${Value}
+#     Wait Until Element Is Visible    //input[@name="${Field}"]
+#     Input Text                       //input[@name="${Field}"]    ${Value}
 
 Input From Excel
     [Arguments]    ${file_path}    ${start_row}    @{fields}
