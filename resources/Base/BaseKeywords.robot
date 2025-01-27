@@ -67,19 +67,29 @@ Click Checkbox
     Click Element         xpath=//div[contains(@class, 'rz-chkbox')]
 
 Click Lookup With Search
-    [Arguments]                      ${LookupName}                                                                                                  ${Search}
+    [Arguments]    ${LookupName}    ${Search}
+
     Wait Until Element Is Visible
-    ...                              xpath=//label[@for="${LookupName}" and contains(@class, 'rz-label')]/following::button[1]
-    Click Element                    xpath=//label[@for="${LookupName}" and contains(@class, 'rz-label')]/following::button[1]
-    Wait Until Element Is Visible
-    ...                              xpath=//div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//input[@id='ifin-searchbar']
-    Input Text
-    ...                              xpath=//div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//input[@id='ifin-searchbar']
-    ...                              ${Search}
-    Wait Until Element Is Visible
-    ...                              xpath=//div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//tr[1]//button[@title='Select']
+    ...                              //label[@for="${LookupName}" and contains(@class, 'rz-label')]/following::button[1]
     Click Element
-    ...                              xpath=//div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//tr[1]//button[@title='Select']
+    ...                              //label[@for="${LookupName}" and contains(@class, 'rz-label')]/following::button[1]
+
+    Wait Until Element Is Visible
+    ...                              //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//input[@id='ifin-searchbar']
+
+    Input Text
+    ...           //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//input[@id='ifin-searchbar']
+    ...           ${Search}
+
+    Wait Until Element Is Visible
+    ...                              //span[contains(@title, '${Search}') and text()='${Search}']
+
+    Sleep    1s
+
+    Click Element
+    ...              //span[contains(@title, '${Search}') and text()='${Search}']
+
+
 
 Click Lookup
     [Arguments]                      ${LookupName}
@@ -132,31 +142,39 @@ Click Switch
     Execute JavaScript    document.querySelector('input[name="${InputName}"]').click();
 
 Click DDL
-    [Arguments]                      ${DDLID}           ${OptionValue}
-    ${PathDropDown}=                 Set Variable       //*[@id='${DDLID}']
-    ${PathOption}=                   Set Variable       //li[@role='option' and @aria-label='${OptionValue}']
+    [Arguments]                      ${DDLID}                              ${OptionValue}
+    ${PathDropDown}=                 Set Variable                          //*[@id='${DDLID}']
+    ${PathOption}=                   Set Variable                          //li[@role="option" and @aria-label="${OptionValue}"]
     Wait Until Element Is Visible    ${PathDropDown}
     Click Element                    ${PathDropDown}
     Wait Until Element Is Visible    ${PathOption}
     Click Element                    ${PathOption}
+    Log                              Clicked ${OptionValue} in ${DDLID}
+
+Click Radio Button
+    [Arguments]               ${value}
+    ${radio_button_value}=    Set Variable                   //div[@class="rz-radio-button-list-horizontal"]//div[@title="${value}"]
+    Click Element             xpath:${radio_button_value}
+
 
 # region input fied
 
 Input Field
     [Arguments]    ${Field}    ${Value}
-    ${result}=     Run Keyword And Ignore Error    Input First Field    ${Field}    ${Value}
-    IF             ${result}[0] == 'FAIL'
-        ${result}=     Run Keyword And Ignore Error    Input Second Field    ${Field}    ${Value}
+
+    ${result}=    Run Keyword And Ignore Error    Input First Field     ${Field}    ${Value}
+    IF            "${result}"[0:4] == "FAIL"
+    ${result}=    Run Keyword And Ignore Error    Input Second Field    ${Field}    ${Value}
     END
-    IF             ${result}[0] == 'FAIL'
-        ${result}=     Run Keyword And Ignore Error    Click Date Picker    ${Field}    ${Value}
+    IF            "${result}"[0:4] == "FAIL"
+    ${result}=    Run Keyword And Ignore Error    Click Date Picker     ${Field}    ${Value}
     END
-    
+
 
 Input First Field
-    [Arguments]                      ${Field}                                                                       ${Value}
-    Wait Until Element Is Visible    //input[@name="${Field}" and contains(@class, 'rz-textbox rz-state-empty')]
-    Input Text                       //input[@name="${Field}" and contains(@class, 'rz-textbox rz-state-empty')]    ${Value}
+    [Arguments]                      ${Field}                                                            ${Value}
+    Wait Until Element Is Visible    //input[@name="${Field}" and contains(@class, 'rz-state-empty')]
+    Input Text                       //input[@name="${Field}" and contains(@class, 'rz-state-empty')]    ${Value}
 
 Input Second Field
     [Arguments]                      ${Field}                     ${Value}
@@ -164,14 +182,14 @@ Input Second Field
     Input Text                       //input[@name="${Field}"]    ${Value}
 
 # Input Date
-#     [Arguments]                      ${Field}                     ${Value}
-#     Click Date Picker               ${Value}
+#    [Arguments]          ${Field}    ${Value}
+#    Click Date Picker    ${Value}
 
 
 # Input DatePicker
-#     [Arguments]                      ${Field}                     ${Value}
-#     Wait Until Element Is Visible    //input[@name="${Field}"]
-#     Input Text                       //input[@name="${Field}"]    ${Value}
+#    [Arguments]                      ${Field}                     ${Value}
+#    Wait Until Element Is Visible    //input[@name="${Field}"]
+#    Input Text                       //input[@name="${Field}"]    ${Value}
 
 Input From Excel
     [Arguments]    ${file_path}    ${start_row}    @{fields}
@@ -186,29 +204,57 @@ Input From Excel
     ${column_letter}=    Get From Dictionary                ${field}    column
     Log                  Column Letter: ${column_letter}
     ${field_name}=       Get From Dictionary                ${field}    name
+    ${field_type}=       Get From Dictionary                ${field}    field_type
     ${value}=            Get From Dictionary                ${item}     ${column_letter}
 
-    Log           Inputting value: ${value} into field: ${field_name}
-    IF            "${field_name}" != "IsEditable" and "${field_name}" != "IsActive" and "${field_name}" != "IsSpOverride"
-    Input Text    ${field_name}                                                                                              ${value}
-    END
-    END
+    Log                    Inputting value: ${value} into field: ${field_name} of type: ${field_type}
+    Input Field By Type    ${field_type}                                                                 ${field_name}    ${value}
 
-        # Run Keyword If    '${field_name}' == 'IsSpOverride' and '${value}' != '1'    Click Element    class=rz-switch-circle
-
+    END
     Click Submit
-
-    IF                       "${field_name}" == "IsEditable" and ${value} != 1
-    Click Editable Status
-    END
-    IF                       "${field_name}" == "IsActive" and ${value} != 1
-    Click Active Status
-    END
-
     Click Back
     END
-
     Close Workbook
+# Input From Excel
+#    [Arguments]    ${file_path}    ${start_row}    @{fields}
+
+#    Open Workbook    ${file_path}
+#    ${rows}=         Read Worksheet    header=False    start=${start_row}
+
+#    FOR                  ${item}                            IN          @{rows}
+#    Click Add
+#    FOR                  ${field}                           IN          @{fields}
+#    Log                  Field: ${field}
+#    ${column_letter}=    Get From Dictionary                ${field}    column
+#    Log                  Column Letter: ${column_letter}
+#    ${field_name}=       Get From Dictionary                ${field}    name
+#    ${value}=            Get From Dictionary                ${item}     ${column_letter}
+
+#    Log             Inputting value: ${value} into field: ${field_name}
+#    IF              "${field_name}" == "IsEditable" or "${field_name}" == "IsActive" or "${field_name}" == "IsSpOverride" or "${field_name}" == "IsHeaderAccount"
+#    Click Switch    ${field_name}                                                                                                                                    
+#    ELSE IF         "${field_name}" == "IsEditable" or "${field_name}" == "IsActive" or "${field_name}" == "IsSpOverride" or "${field_name}" == "IsHeaderAccount"
+#    Click Switch    ${field_name}                                                                                                                                    
+#    ELSE
+#    Input Text      ${field_name}                                                                                                                                    ${value}
+#    END
+
+#    END
+
+
+#    Click Submit
+
+#    IF                       "${field_name}" == "IsEditable" and ${value} != 1
+#    Click Editable Status
+#    END
+#    IF                       "${field_name}" == "IsActive" and ${value} != 1
+#    Click Active Status
+#    END
+
+#    Click Back
+#    END
+
+#    Close Workbook
 
     # Handle conditional clicks inside the field loop
     # IF    '${field_name}' == 'IsActive'
@@ -258,10 +304,15 @@ Open Browser & Login
     Input Password    name:Password               ${Password}
     Click Button      //button[@type="submit"]
 
-Open Card
-    [Arguments]                    ${CardName}
-    Wait Until Element Contains    //h4[@title="${CardName}"]                 ${CardName}
-    Click Element                  //h4[(contains(text(), "${CardName}"))]
+Open Modul
+    [Arguments]                      ${CardName}
+    Wait Until Element Is Visible    id:ifin-searchbar                          5s
+    Input Text                       id:ifin-searchbar                          ${CardName}
+    Sleep                            0.2s
+    Wait Until Element Contains      //h4[@title="${CardName}"]                 ${CardName}
+    Click Element                    //h4[(contains(text(), "${CardName}"))]
+
+
 
 Open Sidebar Menu
     [Arguments]                    ${Sidebar}
@@ -385,20 +436,27 @@ Process Sub Entries
     END
 
 Input Field By Type
-    [Arguments]        ${field}          ${value}
-    ${field_type} =    Get Field Type    ${field}
+    [Arguments]    ${field_type}    ${field_name}    ${value}
 
-    IF                          '${field_type}' == 'input'
-    Input Field                 ${field}                          ${value}
-    ELSE IF                     '${field_type}' == 'ddl'
-    Click DDL                   ifin-form-ddl-${field.lower()}    ${value}
-    ELSE IF                     '${field_type}' == 'switch'
-    Click Switch                ${field}
-    ELSE IF                     '${field_type}' == 'lookup'
-    Click Lookup With Search    ${field}                          ${value}
-    ELSE IF                     '${field_type}' == 'date'
-    Click Date Picker           ${field}                          ${value}    1
+    IF                          "${field_type}" == "text"
+    Input Field                 ${field_name}                                              ${value}
+    ELSE IF                     "${field_type}" == "ddl"
+    Click DDL                   ifin-form-ddl-${field_name.lower()}                        ${value}
+    Log                         Clicked ${value} in ifin-form-ddl-${field_name.lower()}
+    ELSE IF                     "${field_type}" == "radio"
+    Click Radio Button          ${value}
+    ELSE IF                     "${field_type}" == "switch"
+    Click Switch                ${field_name}
+    ELSE IF                     "${field_type}" == "lookup"
+    Click Lookup With Search    ${field_name}                                              ${value}
+    ELSE IF                     "${field_type}" == "date"
+    Click Date Picker           ${field_name}                                              ${value}    1
+    ELSE
+    Log                         Unknown field type: ${field_type}                          WARN
     END
+
+
+
 
 Get Field Type
     [Arguments]           ${field}

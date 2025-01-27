@@ -1,16 +1,14 @@
 *** Settings ***
-Resource    automation/IFINLOS/TestCases/GeneralCode.robot
-
+Resource    automation/IFINCOLL/TestCases/GLLink.robot
 
 *** Test Cases ***
-IFINSYS
+IFINCOLL
     [Setup]                 Set Selenium Speed    0.2 seconds
     Open Browser & Login    Yaqi                  Yaqi@2
-    Open Card               Loan Origination
+    Open Modul              Collection
 
-    #region process
-    Handle General Code Process
-
+    # region process
+    Handle GL Link Process
 
     #endregion process
 
