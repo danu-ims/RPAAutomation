@@ -380,7 +380,7 @@ Date Convert To Letter Month
 
 Date Convert To Number Day
     [Arguments]    ${Date}
-    ${Day}=        Evaluate    "${Date}"[8:10]
+    ${Day}=        Evaluate    int("${Date}"[8:10])
     [Return]       ${Day}
 
 Date Convert To Year
