@@ -138,8 +138,27 @@ Click Date Picker
 
 
 Click Switch
-    [Arguments]           ${InputName}
-    Execute JavaScript    document.querySelector('input[name="${InputName}"]').click();
+    [Arguments]    ${InputName}    ${Value}
+
+    # mencari element switch berdasarkan input name
+    ${switch_element}    Get WebElement    css:input[name="${InputName}"]
+
+    # eksekusi javascript
+    ${switch_container}    Execute Javascript    return arguments[0].closest('.rz-switch');    ARGUMENTS    ${switch_element}
+
+    # buat untuk mengecek kondisi switch
+    ${class}    Get Element Attribute    ${switch_container}    class
+
+    # perkondisian value dan element
+    Run Keyword If    '${Value}' == '1'     Run Keyword If    'rz-state-empty' in '${class}'       Click Element    ${switch_container}
+    Run Keyword If    '${Value}' == '-1'    Run Keyword If    'rz-switch-checked' in '${class}'    Click Element    ${switch_container}
+
+    Sleep    0.1s    # waktu tunggu update di ui
+
+    # ${new_class}      Get Element Attribute    ${switch_container}    class
+    # Run Keyword If    '${Value}' == '1'        Should Contain         ${new_class}    rz-switch-checked
+    # Run Keyword If    '${Value}' == '-1'       Should Contain         ${new_class}    rz-state-empty
+
 
 Click DDL
     [Arguments]                      ${DDLID}                              ${OptionValue}
@@ -162,34 +181,34 @@ Click Radio Button
 Input Field
     [Arguments]    ${Field}    ${Value}
 
-    ${result}=    Run Keyword And Ignore Error    Input First Field     ${Field}    ${Value}
-    IF            "${result}"[0:4] == "FAIL"
-    ${result}=    Run Keyword And Ignore Error    Input Second Field    ${Field}    ${Value}
+    ${result}=    Run Keyword And Ignore Error    Input Text Field      ${Field}    ${Value}
+    IF            "${result}[0]" == "FAIL"
+    ${result}=    Run Keyword And Ignore Error    Input Number Field    ${Field}    ${Value}
     END
-    IF            "${result}"[0:4] == "FAIL"
+    # IF            "${result}[0]" == "FAIL"
+    # ${result}=    Run Keyword And Ignore Error    Input TextArea Field    ${Field}    ${Value}
+    # END
+    IF            "${result}[0]" == "FAIL"
     ${result}=    Run Keyword And Ignore Error    Click Date Picker     ${Field}    ${Value}
     END
 
 
-Input First Field
+Input Text Field
     [Arguments]                      ${Field}                                                            ${Value}
     Wait Until Element Is Visible    //input[@name="${Field}" and contains(@class, 'rz-state-empty')]
     Input Text                       //input[@name="${Field}" and contains(@class, 'rz-state-empty')]    ${Value}
 
-Input Second Field
+Input Number Field
     [Arguments]                      ${Field}                     ${Value}
     Wait Until Element Is Visible    //input[@name="${Field}"]
-    Input Text                       //input[@name="${Field}"]    ${Value}
+    Input Text                       
+    //input[@name="${Field}"]        ${Value}
 
-# Input Date
-#    [Arguments]          ${Field}    ${Value}
-#    Click Date Picker    ${Value}
+Input Text Area Field
+    [Arguments]      ${Field}                        ${Value}
+    Click Element    //textarea[@name="${Field}"]
+    Input Text       //textarea[@name="${Field}"]    ${Value}
 
-
-# Input DatePicker
-#    [Arguments]                      ${Field}                     ${Value}
-#    Wait Until Element Is Visible    //input[@name="${Field}"]
-#    Input Text                       //input[@name="${Field}"]    ${Value}
 
 Input From Excel
     [Arguments]    ${file_path}    ${start_row}    @{fields}
@@ -315,9 +334,9 @@ Open Modul
 
 
 Open Sidebar Menu
-    [Arguments]                    ${Sidebar}
-    Wait Until Element Contains    //span[(contains(text(), "${Sidebar}"))]    ${Sidebar}
-    Click Element                  //span[(contains(text(), "${Sidebar}"))]
+    [Arguments]                      ${Sidebar}
+    Wait Until Element Is Visible    //span[text()="${Sidebar}"]
+    Click Element                    //span[text()="${Sidebar}"]
 
 Open To Edit Data
     Wait Until Element Is Visible    ${FirstRowData}
@@ -439,20 +458,21 @@ Input Field By Type
     [Arguments]    ${field_type}    ${field_name}    ${value}
 
     IF                          "${field_type}" == "text"
-    Input Field                 ${field_name}                                              ${value}
+    Input Field                 ${field_name}                          ${value}
+    ELSE IF                          "${field_type}" == "textarea"
+    Input Text Area Field       ${field_name}                          ${value}
     ELSE IF                     "${field_type}" == "ddl"
-    Click DDL                   ifin-form-ddl-${field_name.lower()}                        ${value}
-    Log                         Clicked ${value} in ifin-form-ddl-${field_name.lower()}
+    Click DDL                   ifin-form-ddl-${field_name.lower()}    ${value}
     ELSE IF                     "${field_type}" == "radio"
     Click Radio Button          ${value}
     ELSE IF                     "${field_type}" == "switch"
-    Click Switch                ${field_name}
+    Click Switch                ${field_name}                          ${value}
     ELSE IF                     "${field_type}" == "lookup"
-    Click Lookup With Search    ${field_name}                                              ${value}
+    Click Lookup With Search    ${field_name}                          ${value}
     ELSE IF                     "${field_type}" == "date"
-    Click Date Picker           ${field_name}                                              ${value}    1
+    Click Date Picker           ${field_name}                          ${value}    1
     ELSE
-    Log                         Unknown field type: ${field_type}                          WARN
+    Log                         Unknown field type: ${field_type}      WARN
     END
 
 
