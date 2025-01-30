@@ -136,7 +136,6 @@ Click Date Picker
 
     Click Element    //span[text()='${Day}']
 
-
 Click Switch
     [Arguments]    ${InputName}    ${Value}
 
@@ -372,22 +371,21 @@ Logout
 
 #region Date Convert
 Date Convert To Letter Month
-    [Arguments]    ${Date}
-    ${Month}=      Get Substring    ${Date}    5    7
-
-    ${MonthNames}=    Create List           January          February        March    April    May    June    July    August    September    October    November    December
+    [Arguments]       ${Date}
+    ${Month}=         Evaluate              "${Date}"[5:7]
+    ${MonthNames}=    Create List           January           February        March    April    May    June    July    August    September    October    November    December
     ${index}=         Convert To Integer    ${Month}
-    ${MonthName}=     Get From List         ${MonthNames}    ${index - 1}
+    ${MonthName}=     Get From List         ${MonthNames}     ${index - 1}
     [Return]          ${MonthName}
 
 Date Convert To Number Day
     [Arguments]    ${Date}
-    ${Day}=        Get Substring    ${Date}    8    10
+    ${Day}=        Evaluate    "${Date}"[8:10]
     [Return]       ${Day}
 
 Date Convert To Year
     [Arguments]    ${Date}
-    ${Year}=       Get Substring    ${Date}    0    4
+    ${Year}=       Evaluate    "${Date}"[0:4]
     [Return]       ${Year}
 #endregion Date Convert
 
@@ -459,7 +457,7 @@ Input Field By Type
 
     IF                          "${field_type}" == "text"
     Input Field                 ${field_name}                          ${value}
-    ELSE IF                          "${field_type}" == "textarea"
+    ELSE IF                     "${field_type}" == "textarea"
     Input Text Area Field       ${field_name}                          ${value}
     ELSE IF                     "${field_type}" == "ddl"
     Click DDL                   ifin-form-ddl-${field_name.lower()}    ${value}
