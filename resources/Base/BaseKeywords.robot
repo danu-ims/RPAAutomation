@@ -208,6 +208,39 @@ Input Text Area Field
     Click Element    //textarea[@name="${Field}"]
     Input Text       //textarea[@name="${Field}"]    ${Value}
 
+Input Colour
+    [Arguments]    ${Field}    ${Value}
+
+    Wait Until Element Is Visible    css=.rz-colorpicker                                           timeout=10s
+    Execute JavaScript               document.querySelector('.rz-colorpicker-trigger').click();
+    Sleep                            2s                                                            # Allow time for panel to appear
+
+    Capture Page Screenshot    # Debugging step
+
+    # Try waiting using a more flexible XPath
+    Wait Until Page Contains Element    xpath=//input[@aria-label="Hex"]    timeout=10s
+
+    Clear Element Text    xpath=//input[@aria-label="Hex"]
+    Input Text            xpath=//input[@aria-label="Hex"]    ${Value}
+    Press Keys            xpath=//input[@aria-label="Hex"]    ENTER
+
+    Sleep    1s    # Allow value to register
+
+    # Scroll to the "OK" button
+    Execute JavaScript    document.querySelector("button.rz-primary").scrollIntoView({behavior: 'smooth', block: 'center'});
+
+    Sleep    1s    # Allow scrolling to complete
+
+    # Ensure the button is visible before clicking
+    Wait Until Element Is Visible    xpath=//button[contains(@class,'rz-primary')]    timeout=10s
+    Click Element                    xpath=//button[contains(@class,'rz-primary')]
+
+    Sleep    1s    # Ensure changes are applied
+
+
+
+
+
 
 Input From Excel
     [Arguments]    ${file_path}    ${start_row}    @{fields}
@@ -335,7 +368,11 @@ Open Modul
 Open Sidebar Menu
     [Arguments]                      ${Sidebar}
     Wait Until Element Is Visible    //span[text()="${Sidebar}"]
-    Click Element                    //span[text()="${Sidebar}"]
+    Execute JavaScript               document.evaluate('//span[text()="${Sidebar}"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+
+    Wait Until Element Is Visible    //span[text()="${Sidebar}"]    timeout=5s
+
+    Click Element    //span[text()="${Sidebar}"]
 
 Open To Edit Data
     Wait Until Element Is Visible    ${FirstRowData}
@@ -459,6 +496,8 @@ Input Field By Type
     Input Field                 ${field_name}                          ${value}
     ELSE IF                     "${field_type}" == "textarea"
     Input Text Area Field       ${field_name}                          ${value}
+    ELSE IF                     "${field_type}" == "colour"
+    Input Colour                ${field_name}                          ${value}
     ELSE IF                     "${field_type}" == "ddl"
     Click DDL                   ifin-form-ddl-${field_name.lower()}    ${value}
     ELSE IF                     "${field_type}" == "radio"
