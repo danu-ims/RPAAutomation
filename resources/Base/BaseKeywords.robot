@@ -28,17 +28,10 @@ Click Add
     Click Element                    ${ElementButton2}
     END
 
-# Click Add
-#    Wait Until Element Is Visible    //button[.//span[contains(text(), "Add")]]
-#    Click Element                    //button[.//span[contains(text(), "Add")]]
-
 Click Submit
     Wait Until Element Is Visible    //button[@type="submit"]
     Click Element                    //button[@type="submit"]
 
-# Click Back
-#    Wait Until Element Is Visible    //button[.//span[contains(text(), "Back")]]
-#    Click Element                    //button[.//span[contains(text(), "Back")]]
 
 Click Sidebar Toogle
     Wait Until Element Is Visible    //div[@class='sidebar-toggle']
@@ -97,15 +90,6 @@ Click Lookup
     ...                              xpath=//label[@for="${LookupName}" and contains(@class, 'rz-label')]/following::button[1]
     Click Element                    xpath=//label[@for="${LookupName}" and contains(@class, 'rz-label')]/following::button[1]
     Click Element                    //tr[1]//button[normalize-space()='Select']
-
-# Click DatePicker
-#    [Arguments]                      ${LookupName}                   ${Date}
-#    Click Element                    id=${LookupName}
-#    Wait Until Element Is Visible    class=rz-datepicker-group
-#    Click Element                    xpath=//td[text()='${Date}']
-
-
-
 
 Click Date Picker
     [Arguments]                 ${IDDatePicker}                 ${Date}                     ${Index}=1
@@ -217,28 +201,19 @@ Input Colour
 
     Capture Page Screenshot    # Debugging step
 
-    # Try waiting using a more flexible XPath
     Wait Until Page Contains Element    xpath=//input[@aria-label="Hex"]    timeout=10s
 
     Clear Element Text    xpath=//input[@aria-label="Hex"]
     Input Text            xpath=//input[@aria-label="Hex"]    ${Value}
     Press Keys            xpath=//input[@aria-label="Hex"]    ENTER
 
-    Sleep    1s    # Allow value to register
-
-    # Scroll to the "OK" button
+    Sleep                 1s                                                                                                    # Allow value to register
     Execute JavaScript    document.querySelector("button.rz-primary").scrollIntoView({behavior: 'smooth', block: 'center'});
 
-    Sleep    1s    # Allow scrolling to complete
-
-    # Ensure the button is visible before clicking
+    Sleep                            1s                                               # Allow scrolling to complete
     Wait Until Element Is Visible    xpath=//button[contains(@class,'rz-primary')]    timeout=10s
     Click Element                    xpath=//button[contains(@class,'rz-primary')]
-
-    Sleep    1s    # Ensure changes are applied
-
-
-
+    Sleep                            1s                                               # Ensure changes are applied
 
 
 
@@ -363,16 +338,112 @@ Open Modul
     Wait Until Element Contains      //h4[@title="${CardName}"]                 ${CardName}
     Click Element                    //h4[(contains(text(), "${CardName}"))]
 
-
-
 Open Sidebar Menu
-    [Arguments]                      ${Sidebar}
-    Wait Until Element Is Visible    //span[text()="${Sidebar}"]
-    Execute JavaScript               document.evaluate('//span[text()="${Sidebar}"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+    [Arguments]    ${SidebarParentIndex}    ${Sidebar}    ${SidebarChildIndex}=${None}    ${ChildSidebar}=${None}
 
-    Wait Until Element Is Visible    //span[text()="${Sidebar}"]    timeout=5s
+    # Wait until the first occurrence of the sidebar is visible
+    Wait Until Element Is Visible    (//span[text()="${Sidebar}"])[1]    timeout=5s
 
-    Click Element    //span[text()="${Sidebar}"]
+    # Scroll into view and click the first occurrence
+    Execute JavaScript    document.evaluate('(//span[text()="${Sidebar}"])[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+    Click Element         (//span[text()="${Sidebar}"])[1]
+
+    # Try to click the first occurrence of ChildSidebar if ${SidebarChildIndex} is provided
+    Run Keyword If    '${SidebarChildIndex}' == 'Child'       Click Child Sidebar    ${ChildSidebar}    1
+    Run Keyword If    '${SidebarChildIndex}' == 'Child Of'    Click Child Sidebar    ${ChildSidebar}    2
+
+Click Child Sidebar
+    [Arguments]                      ${ChildSidebar}                                                                                                                                                                                       ${index}
+    Wait Until Element Is Visible    (//span[text()="${ChildSidebar}"])[${index}]                                                                                                                                                          timeout=5s
+    Execute JavaScript               document.evaluate('(//span[text()="${ChildSidebar}"])[${index}]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+    Click Element                    (//span[text()="${ChildSidebar}"])[${index}]
+
+
+
+
+# Open Sidebar Menu
+#    [Arguments]    ${Sidebar}    ${ChildSidebar}
+
+#    # Wait until the first occurrence of the sidebar is visible
+#    Wait Until Element Is Visible                                  (//span[text()="${Sidebar}"])[1]    timeout=5s
+
+#    # Scroll into view and click the first occurrence
+#    Execute JavaScript                                   document.evaluate('(//span[text()="${Sidebar}"])[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                                        (//span[text()="${Sidebar}"])[1]
+
+#    # Wait until the second occurrence is visible
+#    Wait Until Element Is Visible                    (//span[text()="${ChildSidebar}"])[2]    timeout=5s
+
+#    # Scroll into view and click the second occurrence
+#    Execute JavaScript                                    document.evaluate('(//span[text()="${ChildSidebar}"])[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                                         (//span[text()="${ChildSidebar}"])[2]
+
+
+
+# Open Sidebar Menu
+#    [Arguments]                      ${ParentSidebar}                                                                                                                                                                                ${ChildSidebar}
+#    Wait Until Element Is Visible    (//span[text()="${ParentSidebar}"])[1]                                                                                                                                                          timeout=5s
+#    Execute JavaScript               document.evaluate('(//span[text()="${ParentSidebar}"])[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                    (//span[text()="${ParentSidebar}"])[1]
+
+#    # Try to click the child sidebar item
+#    ${ChildStatus}=                          Run Keyword And Return Status    Click Child Sidebar    ${ChildSidebar}
+
+#    # If child click fails, execute the fallback action
+#    Run Keyword If                                         not ${ChildStatus}    Execute Fallback Action    ${ChildSidebar}
+
+# Click Child Sidebar
+#    [Arguments]                      ${ChildSidebar}
+#    Wait Until Element Is Visible    (//span[text()="${ChildSidebar}"])[2]                                                                                                                                                          timeout=5s
+#    Execute JavaScript               document.evaluate('(//span[text()="${ChildSidebar}"])[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                    (//span[text()="${ChildSidebar}"])[2]
+
+# Execute Fallback Action
+#    # Hardcode the fallback sidebar item or derive it dynamically
+#    ${FallbackSidebar}=                                              Set Variable                                                                                                                                                                                 DefaultSidebar    # Replace with your fallback item
+#    Wait Until Element Is Visible                                    //span[text()="${FallbackSidebar}"]
+#    Execute JavaScript                                               document.evaluate('//span[text()="${FallbackSidebar}"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Wait Until Element Is Visible                                    //span[text()="${FallbackSidebar}"]                                                                                                                                                          timeout=5s
+#    Click Element                                                    //span[text()="${FallbackSidebar}"]
+
+# Open Sidebar Menu
+#    Set Selenium Speed    0.0 seconds
+#    [Arguments]           ${ParentSidebar}    ${ChildSidebar}
+
+#    # Click Parent Sidebar
+#    Wait Until Element Is Visible    (//span[text()="${ParentSidebar}"])[1]                                                                                                                                                          timeout=3s
+#    Execute JavaScript               document.evaluate('(//span[text()="${ParentSidebar}"])[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                    (//span[text()="${ParentSidebar}"])[1]
+
+#    # Try Clicking Child Sidebar and Store Result
+#    ${result} =                                      Run Keyword And Ignore Error    Click Child Sidebar    ${ChildSidebar}
+
+#    # If Child Click Fails (result[0] == "FAIL"), Click Alternative Sidebar
+#    IF                                                                         '${result}[0]' == 'FAIL'    
+#    Click Alternative Sidebar                                                  ${ChildSidebar}
+#    ELSE
+#    Click Alternative Sidebar                                                  ${ChildSidebar}
+#    END
+#    Set Selenium Speed                                                         0.1 seconds
+
+# Click Child Sidebar
+#    [Arguments]                      ${ChildSidebar}
+#    Run Keyword And Return Status    Wait Until Element Is Visible                                                                                                                                                                  (//span[text()="${ChildSidebar}"])[2]    timeout=2s
+#    Execute JavaScript               document.evaluate('(//span[text()="${ChildSidebar}"])[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                    (//span[text()="${ChildSidebar}"])[2]
+# Click Child Sidebar 2
+#    [Arguments]                      ${ChildSidebar}
+#    Run Keyword And Return Status    Wait Until Element Is Visible                                                                                                                                                                  (//span[text()="${ChildSidebar}"])[1]    timeout=2s
+#    Execute JavaScript               document.evaluate('(//span[text()="${ChildSidebar}"])[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                    (//span[text()="${ChildSidebar}"])[1]
+
+# Click Alternative Sidebar
+#    [Arguments]                      ${Sidebar}
+#    Wait Until Element Is Visible    //span[text()="${Sidebar}"]                                                                                                                                                          timeout=2s
+#    Execute JavaScript               document.evaluate('//span[text()="${Sidebar}"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView({behavior: 'smooth', block: 'center'})
+#    Click Element                    //span[text()="${Sidebar}"]
+
+
 
 Open To Edit Data
     Wait Until Element Is Visible    ${FirstRowData}
@@ -410,9 +481,9 @@ Logout
 Date Convert To Letter Month
     [Arguments]       ${Date}
     ${Month}=         Evaluate              "${Date}"[5:7]
-    ${MonthNames}=    Create List           January           February        March    April    May    June    July    August    September    October    November    December
+    ${MonthNames}=    Create List           January           February    March    April    May    June    July    August    September    October    November    December
     ${index}=         Convert To Integer    ${Month}
-    ${MonthName}=     Get From List         ${MonthNames}     ${index - 1}
+    ${MonthName}=     Get From List         ${MonthNames}     ${index}
     [Return]          ${MonthName}
 
 Date Convert To Number Day
