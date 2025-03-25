@@ -1,10 +1,12 @@
 *** Settings ***
 Resource    resources/Base/BaseVariables.robot
+Resource    resources/Base/Keywords/StepInput.robot
+Resource    resources/Base/Keywords/ActionInput.robot
 
 
 *** Variables ***
-${TABLE_LOCATOR}        //table[contains(@class, 'rz-grid-table')]    # Adjust as needed
-${CODE_LINK_LOCATOR}    //td[2]//rz-chkbox-box                        # Assuming the link is in the second column
+${TABLE_LOCATOR}        //table[contains(@class, 'rz-grid-table')]    
+${CODE_LINK_LOCATOR}    //td[2]//rz-chkbox-box                        
 
 ${TableXpath}                  //table[contains(@class, 'rz-grid-table')]
 ${FirstRowData}                ${TableXpath}//tr[1]//td[2]//a
@@ -38,8 +40,12 @@ Click Sidebar Toogle
     Click Element                    //div[@class='sidebar-toggle']
 
 Click Back
-    Wait Until Element Is Visible    //button[@title='Back']
-    Click Element                    //button[@title='Back']
+    sleep                            0.5s                                                      
+    Wait Until Element Is Visible    //button[@title='Back']                                   
+    Execute JavaScript               document.querySelector("button[title='Back']").click()    
+    # Scroll Element Into View         //button[@title='Back']
+    # Wait Until Element Is Visible    //button[@title='Back']
+    # Click Element                    //button[@title='Back']
 
 Click Active Status
     Wait Until Element Is Visible    id:ifin-btn-active
@@ -77,10 +83,58 @@ Click Lookup With Search
     Wait Until Element Is Visible
     ...                              //span[contains(@title, '${Search}') and text()='${Search}']
 
-    Sleep    1s
+    Sleep    0.5s
 
     Click Element
     ...              //span[contains(@title, '${Search}') and text()='${Search}']
+
+
+
+Add Multi Lookup With Search
+    [Arguments]    ${Search}
+
+    # Click Add
+
+    # Tunggu hingga input pencarian di modal terlihat dan masukkan kata pencarian
+    Wait Until Element Is Visible
+    ...                              //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//input[@id='ifin-searchbar']
+    ...                              timeout=10s
+
+    Input Text
+    ...           //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//input[@id='ifin-searchbar']
+    ...           ${Search}
+
+    sleep    0.7s
+
+    Wait Until Element Is Visible
+    ...                              //tr[td//span[contains(text(), '${Search}')]]//div[contains(@class, 'rz-chkbox')]
+    ...                              timeout=10s
+
+    ${result}=    Run Keyword And Ignore Error                                                         Click Element
+    ...           //tr[td//span[contains(text(), '${Search}')]]//div[contains(@class, 'rz-chkbox')]
+
+    # Jika gagal, maka tutup modal dan lanjut keyword selanjutnya
+    Run Keyword If    '${result}[0]' == 'FAIL'    Run Keywords    Exit Modal    AND    Return From Keyword
+
+    Wait Until Element Is Visible
+    ...                              //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//button[contains(@class, 'rz-button') and contains(@class, 'rz-variant-outlined') and contains(@class, 'rz-info')]
+    ...                              timeout=5s
+
+    # Scroll ke tombol "Add" jika tidak terlihat
+    Scroll Element Into View
+    ...                         //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//button[contains(@class, 'rz-button') and contains(@class, 'rz-variant-outlined') and contains(@class, 'rz-info')]
+
+    # Klik tombol "Add" dalam modal
+    Click Element
+    ...              //div[@class='rz-card rz-variant-filled ifinancing360-modal-content']//button[contains(@class, 'rz-button') and contains(@class, 'rz-variant-outlined') and contains(@class, 'rz-info')]
+
+    Exit Modal
+
+
+
+
+
+
 
 
 
@@ -92,26 +146,33 @@ Click Lookup
     Click Element                    //tr[1]//button[normalize-space()='Select']
 
 Click Date Picker
-    [Arguments]                 ${IDDatePicker}                 ${Date}                     ${Index}=1
-    ${ReformatEffectiveDate}    Convert Date                    ${Date}
-    ${Month}=                   Date Convert To Letter Month    ${ReformatEffectiveDate}
-    ${Year}=                    Date Convert To Year            ${ReformatEffectiveDate}
-    ${Day}=                     Date Convert To Number Day      ${ReformatEffectiveDate}
+    [Arguments]        ${IDDatePicker}                 ${Date}            ${Index}=1
+    ${ReformatDate}    Convert Date                    ${Date}
+    ${Month}=          Date Convert To Letter Month    ${ReformatDate}
+    ${Year}=           Date Convert To Year            ${ReformatDate}
+    ${Day}=            Date Convert To Number Day      ${ReformatDate}
 
     Wait Until Element Is Visible    //input[@id='${IDDatePicker}']/following-sibling::button
     Click Element                    //input[@id='${IDDatePicker}']/following-sibling::button
 
+    sleep    0.5s
+
     Wait Until Element Is Visible    xpath=(//div[@class='rz-dropdown'])[${Index}]
     Click Element                    xpath=(//div[@class='rz-dropdown'])[${Index}]
 
-    ${element}=                 Get WebElement    xpath=//li[@aria-label="${Month}"]
-    Scroll Element Into View    ${element}
-    Element Should Contain      ${element}        ${Month}
-    Click Element               ${element}
+    ${element}=           Get WebElement                                                        xpath=//li[@aria-label="${Month}"]
+    Execute JavaScript    arguments[0].scrollIntoView({block: "center", inline: "nearest"});    ARGUMENTS                             ${element}
+
+    Element Should Contain    ${element}    ${Month}
+    Click Element             ${element}
+
+    sleep    0.5s
 
     ${NextIndex}=                    Evaluate                                             ${Index} + 1
     Wait Until Element Is Visible    xpath=(//div[@class='rz-dropdown'])[${NextIndex}]
     Click Element                    xpath=(//div[@class='rz-dropdown'])[${NextIndex}]
+
+    sleep    0.5s
 
     ${element}=                 Get WebElement    xpath=//li[@aria-label="${Year}"]
     Scroll Element Into View    ${element}
@@ -122,6 +183,8 @@ Click Date Picker
 
 Click Switch
     [Arguments]    ${InputName}    ${Value}
+
+    # sleep    0.5s
 
     # mencari element switch berdasarkan input name
     ${switch_element}    Get WebElement    css:input[name="${InputName}"]
@@ -135,12 +198,6 @@ Click Switch
     # perkondisian value dan element
     Run Keyword If    '${Value}' == '1'     Run Keyword If    'rz-state-empty' in '${class}'       Click Element    ${switch_container}
     Run Keyword If    '${Value}' == '-1'    Run Keyword If    'rz-switch-checked' in '${class}'    Click Element    ${switch_container}
-
-    Sleep    0.1s    # waktu tunggu update di ui
-
-    # ${new_class}      Get Element Attribute    ${switch_container}    class
-    # Run Keyword If    '${Value}' == '1'        Should Contain         ${new_class}    rz-switch-checked
-    # Run Keyword If    '${Value}' == '-1'       Should Contain         ${new_class}    rz-state-empty
 
 
 Click DDL
@@ -192,12 +249,39 @@ Input Text Area Field
     Click Element    //textarea[@name="${Field}"]
     Input Text       //textarea[@name="${Field}"]    ${Value}
 
+# Input Colour
+#    [Arguments]    ${Field}    ${Value}
+
+#    Wait Until Element Is Visible    css=.rz-colorpicker                                           timeout=10s
+#    Execute JavaScript               document.querySelector('.rz-colorpicker-trigger').click();
+#    Sleep                            2s                                                            # Allow time for panel to appear
+
+#    Capture Page Screenshot    # Debugging step
+
+#    Wait Until Page Contains Element    xpath=//input[@aria-label="Hex"]    timeout=10s
+
+#    Clear Element Text    xpath=//input[@aria-label="Hex"]
+#    Input Text            xpath=//input[@aria-label="Hex"]    ${Value}
+#    Press Keys            xpath=//input[@aria-label="Hex"]    ENTER
+
+#    Sleep                 1s                                                                                                    # Allow value to register
+#    Execute JavaScript    document.querySelector("button.rz-primary").scrollIntoView({behavior: 'smooth', block: 'center'});
+
+#    Sleep                            1s                                               # Allow scrolling to complete
+#    Wait Until Element Is Visible    xpath=//button[contains(@class,'rz-primary')]    timeout=10s
+#    Click Element                    xpath=//button[contains(@class,'rz-primary')]
+#    Sleep                            1s                                               
+
 Input Colour
     [Arguments]    ${Field}    ${Value}
 
-    Wait Until Element Is Visible    css=.rz-colorpicker                                           timeout=10s
-    Execute JavaScript               document.querySelector('.rz-colorpicker-trigger').click();
-    Sleep                            2s                                                            # Allow time for panel to appear
+    Wait Until Element Is Visible    css=.rz-colorpicker    timeout=10s
+
+    # Ubah display color picker dari 'none' menjadi 'block'
+
+    Execute JavaScript    document.querySelector('.rz-colorpicker-popup').style.display = 'block';
+    Execute JavaScript    document.querySelector('.rz-colorpicker-popup').style.display = 'none';
+    Execute JavaScript    document.querySelector('.rz-colorpicker-trigger').click();
 
     Capture Page Screenshot    # Debugging step
 
@@ -207,13 +291,14 @@ Input Colour
     Input Text            xpath=//input[@aria-label="Hex"]    ${Value}
     Press Keys            xpath=//input[@aria-label="Hex"]    ENTER
 
-    Sleep                 1s                                                                                                    # Allow value to register
-    Execute JavaScript    document.querySelector("button.rz-primary").scrollIntoView({behavior: 'smooth', block: 'center'});
+    # Scroll ke tombol dengan mencocokkan seluruh class
+    Execute JavaScript    document.querySelector("button.rz-button.rz-button-md.rz-variant-filled.rz-primary.rz-shade-default").scrollIntoView({behavior: 'smooth', block: 'center'});
 
-    Sleep                            1s                                               # Allow scrolling to complete
-    Wait Until Element Is Visible    xpath=//button[contains(@class,'rz-primary')]    timeout=10s
-    Click Element                    xpath=//button[contains(@class,'rz-primary')]
-    Sleep                            1s                                               # Ensure changes are applied
+    # Tunggu tombol hingga terlihat
+    Wait Until Element Is Visible    xpath=//button[contains(@class, 'rz-button') and contains(@class, 'rz-button-md') and contains(@class, 'rz-variant-filled') and contains(@class, 'rz-primary') and contains(@class, 'rz-shade-default')]    timeout=10s
+
+    # Klik tombol setelah dipastikan terlihat
+    Click Element    xpath=//button[contains(@class, 'rz-button') and contains(@class, 'rz-button-md') and contains(@class, 'rz-variant-filled') and contains(@class, 'rz-primary') and contains(@class, 'rz-shade-default')]
 
 
 
@@ -241,80 +326,17 @@ Input From Excel
     Click Back
     END
     Close Workbook
-# Input From Excel
-#    [Arguments]    ${file_path}    ${start_row}    @{fields}
 
-#    Open Workbook    ${file_path}
-#    ${rows}=         Read Worksheet    header=False    start=${start_row}
+Search In GridTable
+    [Arguments]                  ${Value}
+    # Element Should Be Visible    //table[contains(@class, 'rz-grid-table')]    
+     Sleep            0.3s
+    Input Text                   id:ifin-searchbar                             ${Value}
 
-#    FOR                  ${item}                            IN          @{rows}
-#    Click Add
-#    FOR                  ${field}                           IN          @{fields}
-#    Log                  Field: ${field}
-#    ${column_letter}=    Get From Dictionary                ${field}    column
-#    Log                  Column Letter: ${column_letter}
-#    ${field_name}=       Get From Dictionary                ${field}    name
-#    ${value}=            Get From Dictionary                ${item}     ${column_letter}
-
-#    Log             Inputting value: ${value} into field: ${field_name}
-#    IF              "${field_name}" == "IsEditable" or "${field_name}" == "IsActive" or "${field_name}" == "IsSpOverride" or "${field_name}" == "IsHeaderAccount"
-#    Click Switch    ${field_name}                                                                                                                                    
-#    ELSE IF         "${field_name}" == "IsEditable" or "${field_name}" == "IsActive" or "${field_name}" == "IsSpOverride" or "${field_name}" == "IsHeaderAccount"
-#    Click Switch    ${field_name}                                                                                                                                    
-#    ELSE
-#    Input Text      ${field_name}                                                                                                                                    ${value}
-#    END
-
-#    END
-
-
-#    Click Submit
-
-#    IF                       "${field_name}" == "IsEditable" and ${value} != 1
-#    Click Editable Status
-#    END
-#    IF                       "${field_name}" == "IsActive" and ${value} != 1
-#    Click Active Status
-#    END
-
-#    Click Back
-#    END
-
-#    Close Workbook
-
-    # Handle conditional clicks inside the field loop
-    # IF    '${field_name}' == 'IsActive'
-    # IF    '${value}' == '1'
-    # Click Active Status
-    # END
-    # END
-
-    # IF    '${field_name}' == 'IsEditable'
-    # IF    '${value}' == '1'
-    # Click Editable Status
-    # END
-    # END
-
-    # [Arguments]    ${file_path}    ${start_row}    @{fields}
-    # Open Workbook    ${file_path}
-    # ${rows}=    Read Worksheet    header=False    start=${start_row}
-    # FOR    ${item}    IN    @{rows}
-    # Click Add
-    # FOR    ${field}    IN    @{fields}
-    # ${column_index}=    Get From Dictionary    ${field}    column
-    # ${field_name}=    Get From Dictionary    ${field}    name
-    # Input Field    ${field_name}    ${item[${column_index}]}
-    # END
-    # Click Submit
-    # Click Back
-    # END
-    # Close Workbook
-
-# Input Field
-#    [Arguments]       ${Field}                         ${Value}
-#    ${is_visible}=    Wait Until Element Is Visible    //input[@name="${Field}" and contains(@class, 'rz-textbox rz-state-empty')]    timeout=5
-#    Run Keyword If    '${is_visible}' == 'False'       Input Text                                                                     //input[@name="${Field}"]    ${Value}    ELSE    Input Text    //input[@name="${Field}" and contains(@class, 'rz-textbox rz-state-empty')]    ${Value}
-# endregion
+    Sleep            0.7s
+    # Wait Until Element Contains    //span[text()="${Value}"]    ${Value}
+    Click Element
+    ...              //span[text()="${Value}"]
 
 Open Browser & Login
     [Arguments]    ${UserName}    ${Password}
@@ -334,14 +356,14 @@ Open Modul
     [Arguments]                      ${CardName}
     Wait Until Element Is Visible    id:ifin-searchbar                          5s
     Input Text                       id:ifin-searchbar                          ${CardName}
-    Sleep                            0.2s
+    Sleep                            0.5s
     Wait Until Element Contains      //h4[@title="${CardName}"]                 ${CardName}
     Click Element                    //h4[(contains(text(), "${CardName}"))]
 
-Open Sidebar Menu
-    [Arguments]    ${SidebarParentIndex}    ${Sidebar}    ${SidebarChildIndex}=${None}    ${ChildSidebar}=${None}
 
-    # Wait until the first occurrence of the sidebar is visible
+
+Open Sidebar Menu
+    [Arguments]                      ${SidebarParentIndex}               ${Sidebar}    ${SidebarChildIndex}=${None}    ${ChildSidebar}=${None}
     Wait Until Element Is Visible    (//span[text()="${Sidebar}"])[1]    timeout=5s
 
     # Scroll into view and click the first occurrence
@@ -464,6 +486,7 @@ Open To Edit Data Eff Date
 
 Open Wizard
     [Arguments]                    ${WizardName}
+    sleep                          0.5s
     Wait Until Element Contains    //span[(contains(text(), "${WizardName}"))]    ${WizardName}
     Click Element                  //span[(contains(text(), "${WizardName}"))]
 
@@ -563,24 +586,26 @@ Process Sub Entries
 Input Field By Type
     [Arguments]    ${field_type}    ${field_name}    ${value}
 
-    IF                          "${field_type}" == "text"
-    Input Field                 ${field_name}                          ${value}
-    ELSE IF                     "${field_type}" == "textarea"
-    Input Text Area Field       ${field_name}                          ${value}
-    ELSE IF                     "${field_type}" == "colour"
-    Input Colour                ${field_name}                          ${value}
-    ELSE IF                     "${field_type}" == "ddl"
-    Click DDL                   ifin-form-ddl-${field_name.lower()}    ${value}
-    ELSE IF                     "${field_type}" == "radio"
-    Click Radio Button          ${value}
-    ELSE IF                     "${field_type}" == "switch"
-    Click Switch                ${field_name}                          ${value}
-    ELSE IF                     "${field_type}" == "lookup"
-    Click Lookup With Search    ${field_name}                          ${value}
-    ELSE IF                     "${field_type}" == "date"
-    Click Date Picker           ${field_name}                          ${value}    1
+    IF                              "${field_type}" == "text"
+    Input Field                     ${field_name}                          ${value}
+    ELSE IF                         "${field_type}" == "textarea"
+    Input Text Area Field           ${field_name}                          ${value}
+    ELSE IF                         "${field_type}" == "colour"
+    Input Colour                    ${field_name}                          ${value}
+    ELSE IF                         "${field_type}" == "ddl"
+    Click DDL                       ifin-form-ddl-${field_name.lower()}    ${value}
+    ELSE IF                         "${field_type}" == "radio"
+    Click Radio Button              ${value}
+    ELSE IF                         "${field_type}" == "switch"
+    Click Switch                    ${field_name}                          ${value}
+    ELSE IF                         "${field_type}" == "lookup"
+    Click Lookup With Search        ${field_name}                          ${value}
+    ELSE IF                         "${field_type}" == "multilookup"
+    Add Multi Lookup With Search    ${value}
+    ELSE IF                         "${field_type}" == "date"
+    Click Date Picker               ${field_name}                          ${value}    1
     ELSE
-    Log                         Unknown field type: ${field_type}      WARN
+    Log                             Unknown field type: ${field_type}      WARN
     END
 
 

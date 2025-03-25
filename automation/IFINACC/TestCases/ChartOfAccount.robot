@@ -17,7 +17,7 @@ Add New Chart Of Account
     ${IsJm} =               Create Dictionary    name=IsJm               column=H    field_type=switch
     ${ParentAccountNO} =    Create Dictionary    name=ParentAccountNO    column=I    field_type=lookup
 
-    ${fields}=          Create List                                  ${AccountNo}    ${AccountName}    ${IsActive}    ${AccountBankType}    ${AccountLevel}    ${IsHeaderAccount}    ${AccountType}   ${IsJm}    ${ParentAccountNO}     
+    ${fields}=          Create List                                  ${AccountNo}    ${AccountName}    ${IsActive}    ${AccountBankType}    ${AccountLevel}    ${IsHeaderAccount}    ${AccountType}    ${IsJm}    ${ParentAccountNO}    
     Input From Excel    files/excel/IFINACC/Chart Of Account.xlsx    2               @{fields}
 
 

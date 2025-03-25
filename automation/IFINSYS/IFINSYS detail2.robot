@@ -248,214 +248,122 @@ Resource    resources/Base/BaseKeywords.robot
 
 
 # Input From Excel RN
-#    [Arguments]    ${file_path}    ${start_row}    ${listMapExcel}
+#     [Arguments]    ${file_path}    ${start_row}    ${listMapExcel}
 
-#    Open Workbook       ${file_path}
-#    ${region_list} =    Create List 
+#     Open Workbook       ${file_path}
+#     ${region_list} =    Create List 
 
-#    FOR                ${workSheetDict}       IN                  @{listMapExcel}
-#    ${sheet_keys} =    Get Dictionary Keys    ${workSheetDict}
-#    ${sheet_name} =    Set Variable           ${sheet_keys}[0]
-#    ${fields} =        Get From Dictionary    ${workSheetDict}    ${sheet_name}
-#    ${rows} =          Read Worksheet         ${sheet_name}       header=False       start=${start_row}
+#     ${sheets}                List Worksheets
+#     ${sheet_count_total}=    Get Length         ${sheets}
 
-#    IF           '${sheet_name}' != 'Detail'
-#    FOR          ${item}                        IN    @{rows}
-#    Click Add
+#     ${first_sheet_flag} =    Set Variable    ${False}                                  # Flag iterasi untuk sheet pertama
+#     ${first_sheet_name} =    Set Variable    # untuk mendapatkan nama sheet pertama
 
-#    ${first_sheetcode} =    Set Variable    
+#     ${sheet_count_current_loop} =    Set Variable    0
 
-#    FOR                   ${field}               IN          @{fields}
-#    ${column_letter} =    Get From Dictionary    ${field}    column
-#    ${field_name} =       Get From Dictionary    ${field}    name
-#    ${field_type} =       Get From Dictionary    ${field}    field_type
-#    ${value} =            Get From Dictionary    ${item}     ${column_letter}
+#     FOR                              ${workSheetDict}       IN                                 @{listMapExcel}
+#         ${sheet_keys} =                  Get Dictionary Keys    ${workSheetDict}
+#         ${sheet_name} =                  Set Variable           ${sheet_keys}[0]
+#         ${fields} =                      Get From Dictionary    ${workSheetDict}                   ${sheet_name}
+#         ${rows} =                        Read Worksheet         ${sheet_name}                      header=False       start=${start_row}
+#         ${sheet_count_current_loop} =    Evaluate               ${sheet_count_current_loop} + 1
 
-#    Run Keyword If    '${field_type}' == 'NONE' or '${field_name}' == 'NONE' or '${value}' == 'NONE'    Continue For Loop
+#         IF                       ${first_sheet_flag} == ${False}
+#             ${first_sheet_name} =    Set Variable                       ${sheet_name}
+#             ${first_sheet_flag} =    Set Variable                       ${True}
+#         END
 
-#    Input Field By Type    ${field_type}    ${field_name}    ${value}
+#         # -------- Sheet 1: Langsung Input Data -------- #
+#         IF           ${sheet_count_current_loop} == 1
+#             FOR          ${item}                             IN    @{rows}
+#                 Click Add
 
-#    Run Keyword If    "${field_name}" == "Code"    
-#    ...               Set Test Variable            ${first_sheetcode}    ${value}
+#                 ${first_sheetcode} =    Set Variable
 
-#    END
+#                 FOR                   ${field}               IN          @{fields}
+#                     ${column_letter} =    Get From Dictionary    ${field}    column
+#                     ${field_name} =       Get From Dictionary    ${field}    name
+#                     ${field_type} =       Get From Dictionary    ${field}    field_type
+#                     ${value} =            Get From Dictionary    ${item}     ${column_letter}
 
-#    Run Keyword If    '${first_sheetcode}' != ''    
-#    ...               Append To List                ${region_list}    ${first_sheetcode}
+#                     Run Keyword If    '${field_type}' == 'NONE' or '${field_name}' == 'NONE' or '${value}' == 'NONE'    Continue For Loop
 
-#    Click Back
-#    END
-#    END
+#                     Input Field By Type    ${field_type}    ${field_name}    ${value}
 
-#    Log    ${region_list}
+#                     Run Keyword If    "${field_name}" == "Code"
+#                     ...               Set Test Variable            ${first_sheetcode}    ${value}
 
-#    IF                        '${sheet_name}' == 'Detail'
-#    ${prev_code_region} =     Set Variable                   ${EMPTY}    
-#    ${first_time_detail} =    Set Variable                   ${True}     # Flag iterasi pertama
+#                 END
 
-#    FOR                 ${item}                IN         @{rows} 
-#    ${code_region} =    Get From Dictionary    ${item}    A           
+#                 Run Keyword If    '${first_sheetcode}' != ''
+#                 ...               Append To List                ${region_list}    ${first_sheetcode}
 
-#    Run Keyword If    '${code_region}' not in ${region_list}    Continue For Loop
+#                 Click Back
+#             END
+#         END
 
-#    # Jika bukan pertama kali, lakukan Click Back untuk kembali ke halaman utama jika perlu
-#    Run Keyword If                                                                             '${first_time_detail}' == '${False}' and '${code_region}' != '${prev_code_region}'    
-#    ...                                                                                        Run Keyword And Ignore Error                                                          Click Back    
-#    Run Keyword If                                                                             '${first_time_detail}' == '${False}' and '${code_region}' != '${prev_code_region}'    
-#    ...                                                                                        Run Keyword And Ignore Error                                                          Click Back    
+#         # -------- Sheet 2: Pencarian hanya menggunakan Code Sheet 1 -------- #
+#         IF    ${sheet_count_current_loop} == 2
+#             FOR    ${item}    IN    @{rows}
+#                 ${code_sheet1} =    Get From Dictionary    ${item}    A  # Ambil Code Sheet 1
 
-#    Search In GridTable    ${code_region}    
-#    Click Add
+#                 Search In GridTable    ${code_sheet1}  # Pencarian 1 kali dengan Code Sheet 1
 
-#    # Setelah iterasi pertama, ubah flag
-#    ${first_time_detail} =                  Set Variable    ${False}
+#                 Click Add
 
-#    # Mulai input field
-#    FOR                    ${field}               IN          @{fields}
-#    ${column_letter} =     Get From Dictionary    ${field}    column
-#    ${field_name} =        Get From Dictionary    ${field}    name
-#    ${field_type} =        Get From Dictionary    ${field}    field_type
-#    ${value} =             Get From Dictionary    ${item}     ${column_letter}
+#                 # Input data seperti biasa
+#                 FOR    ${field}    IN    @{fields}
+#                     ${column_letter} =    Get From Dictionary    ${field}    column
+#                     ${field_name} =       Get From Dictionary    ${field}    name
+#                     ${field_type} =       Get From Dictionary    ${field}    field_type
+#                     ${value} =            Get From Dictionary    ${item}     ${column_letter}
 
-#    Run Keyword If    '${field_type}' == 'NONE' or '${field_name}' == 'NONE' or '${value}' == 'NONE'    
-#    ...               Continue For Loop
+#                     Input Field By Type    ${field_type}    ${field_name}    ${value}
+#                 END
 
-#    Input Field By Type    ${field_type}    ${field_name}    ${value}
-#    END
+#                 Click Back
+#                 Click Back
+#             END
+#         END
 
-#    # Click Back untuk kembali ke halaman data detail
-#    Click Back
+#         # -------- Sheet 3: Pencarian dengan Code Sheet 1 dan Code Sheet 2 -------- #
+#         IF    ${sheet_count_current_loop} == 3
+#             FOR    ${item}    IN    @{rows}
+#                 ${code_sheet1} =    Get From Dictionary    ${item}    A  # Ambil Code Sheet 1
+#                 ${code_sheet2} =    Get From Dictionary    ${item}    B  # Ambil Code Sheet 2
 
-#    # Jika kode berubah, lakukan Click Back tambahan agar kembali ke halaman utama
-#    Run Keyword If                                                                    '${code_region}' != '${prev_code_region}'    
-#    ...                                                                               Run Keyword And Ignore Error                 Click Back    
+#                 Search In GridTable    ${code_sheet1}  # Pencarian pertama dengan Code Sheet 1
+#                 Search In GridTable    ${code_sheet2}  # Pencarian kedua dengan Code Sheet 2
 
-#    ${prev_code_region} =    Set Variable    ${code_region}
-#    END
-#    END
+#                 Click Add
 
+#                 FOR    ${field}    IN    @{fields}
+#                     ${column_letter} =    Get From Dictionary    ${field}    column
+#                     ${field_name} =       Get From Dictionary    ${field}    name
+#                     ${field_type} =       Get From Dictionary    ${field}    field_type
+#                     ${value} =            Get From Dictionary    ${item}     ${column_letter}
 
-#    END
+#                     Input Field By Type    ${field_type}    ${field_name}    ${value}
+#                 END
 
-#    Close Workbook
+#                 Click Back
+#                 Click Back
+#                 Click Back
+#             END
+#         END
+#     END
 
+#     Close Workbook
 
 
 
 
-Input From Excel RN
-    [Arguments]    ${file_path}    ${start_row}    ${listMapExcel}
 
-    Open Workbook       ${file_path}
-    ${region_list} =    Create List 
 
-    ${sheets}                List Worksheets
-    ${sheet_count_total}=    Get Length         ${sheets}
 
-    ${first_sheet_flag} =    Set Variable    ${False}                                  # Flag iterasi untuk sheet pertama
-    ${first_sheet_name} =    Set Variable    # untuk mendapatkan nama sheet pertama
 
-    ${sheet_count_current_loop} =    Set Variable    0
 
-    FOR                              ${workSheetDict}       IN                                 @{listMapExcel}
-    ${sheet_keys} =                  Get Dictionary Keys    ${workSheetDict}
-    ${sheet_name} =                  Set Variable           ${sheet_keys}[0]
-    ${fields} =                      Get From Dictionary    ${workSheetDict}                   ${sheet_name}
-    ${rows} =                        Read Worksheet         ${sheet_name}                      header=False       start=${start_row}
-    ${sheet_count_current_loop} =    Evaluate               ${sheet_count_current_loop} + 1
 
-    IF                       ${first_sheet_flag} == ${False}
-    ${first_sheet_name} =    Set Variable                       ${sheet_name}
-    ${first_sheet_flag} =    Set Variable                       ${True}
-    END
-
-        # -------- Sheet 1: Langsung Input Data -------- #
-    IF           ${sheet_count_current_loop} == 1
-    FOR          ${item}                             IN    @{rows}
-    Click Add
-
-    ${first_sheetcode} =    Set Variable
-
-    FOR                   ${field}               IN          @{fields}
-    ${column_letter} =    Get From Dictionary    ${field}    column
-    ${field_name} =       Get From Dictionary    ${field}    name
-    ${field_type} =       Get From Dictionary    ${field}    field_type
-    ${value} =            Get From Dictionary    ${item}     ${column_letter}
-
-    Run Keyword If    '${field_type}' == 'NONE' or '${field_name}' == 'NONE' or '${value}' == 'NONE'    Continue For Loop
-
-    Input Field By Type    ${field_type}    ${field_name}    ${value}
-
-    Run Keyword If    "${field_name}" == "Code"
-    ...               Set Test Variable            ${first_sheetcode}    ${value}
-
-    END
-
-    Run Keyword If    '${first_sheetcode}' != ''
-    ...               Append To List                ${region_list}    ${first_sheetcode}
-
-    Click Back
-    END
-    END
-
-        # -------- Sheet 2: Pencarian hanya menggunakan Code Sheet 1 -------- #
-    IF                  ${sheet_count_current_loop} == 2
-    FOR                 ${item}                             IN         @{rows}
-    ${code_sheet1} =    Get From Dictionary                 ${item}    A          # Ambil Code Sheet 1
-
-    Search In GridTable    ${code_sheet1}    # Pencarian 1 kali dengan Code Sheet 1
-
-
-    Open Wizard    ${sheet_name}    
-    Click Add 
-
-                # Input data seperti ke form
-    FOR                   ${field}               IN          @{fields}
-    ${column_letter} =    Get From Dictionary    ${field}    column
-    ${field_name} =       Get From Dictionary    ${field}    name
-    ${field_type} =       Get From Dictionary    ${field}    field_type
-    ${value} =            Get From Dictionary    ${item}     ${column_letter}
-
-    Input Field By Type    ${field_type}    ${field_name}    ${value}
-    END
-
-    Click Back
-    Click Sidebar Toogle    
-    Open Wizard             ${first_sheet_name}
-
-    # Click Back
-    END
-    END
-
-        # -------- Sheet 3: Pencarian dengan Code Sheet 1 dan Code Sheet 2 -------- #
-    IF    ${sheet_count_current_loop} == 3
-
-    FOR                 ${item}                IN         @{rows}
-    ${code_sheet1} =    Get From Dictionary    ${item}    A          # Ambil Code Sheet 1
-
-    Search In GridTable    ${code_sheet1}    # Pencarian 1 kali dengan Code Sheet 1
-
-    Open Wizard    ${sheet_name}    
-    Click Add 
-
-    FOR                   ${field}               IN          @{fields}
-    ${column_letter} =    Get From Dictionary    ${field}    column
-    ${field_name} =       Get From Dictionary    ${field}    name
-    ${field_type} =       Get From Dictionary    ${field}    field_type
-    ${value} =            Get From Dictionary    ${item}     ${column_letter}
-
-    Input Field By Type    ${field_type}    ${field_name}    ${value}
-    END
-
-    Click Back
-    Click Sidebar Toogle    
-    Open Wizard             ${first_sheet_name}
-
-    END
-    END
-    END
-
-    Close Workbook
 # Input From Excel RN
 #    [Arguments]    ${file_path}    ${start_row}
 
@@ -508,75 +416,56 @@ Input From Excel RN
 *** Test Cases ***
 IFINSYS
     [Setup]                 Set Selenium Speed    0.2s
-    Open Browser & Login    Danu                  Danu@1
+    Open Browser & Login    Danu                  Danu@2
     Open Modul              Config
-    Open Sidebar Menu       Parent                Company Information    Child    Branch
+    Open Sidebar Menu       Parent                System Setting    Child    General Code
     ${Sheet1}               Set Variable          Sheet1
 
 
+    ${Code} =           Create Dictionary    name=Code           column=A    field_type=text
+    ${Description} =    Create Dictionary    name=Description    column=B    field_type=text
+    ${IsEditable} =     Create Dictionary    name=IsEditable     column=C    field_type=switch
 
-    ${Code} =                 Create Dictionary    name=Code                 column=A         field_type=text
-    ${BranchType} =           Create Dictionary    name=BranchType           column=B         field_type=ddl
-    ${IsSyariah} =            Create Dictionary    name=IsSyariah            column=C         field_type=switch
-    ${IsActive} =             Create Dictionary    name=IsActive             column=D         field_type=switch
-    ${Name} =                 Create Dictionary    name=Name                 column=E         field_type=text
-    ${PhoneNo} =              Create Dictionary    name=PhoneNo              column=F         field_type=text
-    ${SysRegionBranchID} =    Create Dictionary    name=SysRegionBranchID    column=G         field_type=text
-    ${SysProvinceID} =        Create Dictionary    name=SysProvinceID        column=H         field_type=lookup
-    ${Rt} =                   Create Dictionary    name=Rt                   column=I         field_type=text
-    ${Rw} =                   Create Dictionary    name=Rw                   column=J         field_type=text
-    ${Address} =              Create Dictionary    name=Address              column=K         field_type=text
-    ${fieldMap} =             Create List          ${Code}                   ${BranchType}    ${IsSyariah}         ${IsActive}    ${Name}    ${PhoneNo}    ${SysRegionBranchID}    ${SysProvinceID}    ${Rt}    ${Rw}    ${Address}
-    ${workSheet1} =           Create Dictionary    Branch=${fieldMap}
+    ${fieldMap} =      Create List          ${Code}                     ${Description}    ${IsEditable}
+    ${workSheet1} =    Create Dictionary    General Code=${fieldMap}
 
 
-    ${BranchCode} =    Create Dictionary    name=BranchCode    column=A    field_type=text
+    ${GeneralCode} =    Create Dictionary    name=GeneralCode    column=A    field_type=text
 
-    ${Code} =               Create Dictionary    name=Code               column=B    field_type=text
-    ${BankBranchName} =     Create Dictionary    name=BankBranchName     column=C    field_type=text
-    ${IsActive} =           Create Dictionary    name=IsActive           column=D    field_type=switch
-    ${SysBankID} =          Create Dictionary    name=SysBankID          column=E    field_type=lookup
-    ${BankAccountNo} =      Create Dictionary    name=BankAccountNo      column=F    field_type=text
-    ${BankAccountName} =    Create Dictionary    name=BankAccountName    column=G    field_type=text
-    ${SysCurrencyID} =      Create Dictionary    name=SysCurrencyID      column=H    field_type=lookup
-    ${BankType} =           Create Dictionary    name=BankType           column=I    field_type=ddl 
-    ${GLLinkID} =           Create Dictionary    name=GLLinkID           column=J    field_type=lookup
-    ${fieldMap2} =          Create List          ${BranchCode}           ${Code}     ${BankBranchName}    ${IsActive}    ${SysBankID}    ${BankAccountNo}    ${BankAccountName}    ${SysCurrencyID}    ${BankType}    ${GLLinkID}
-    ${workSheet2} =         Create Dictionary    Bank=${fieldMap2}
+    ${Code} =              Create Dictionary    name=Code              column=B    field_type=text
+    ${Description} =       Create Dictionary    name=Description       column=C    field_type=text
+    ${IsActiveDetail} =    Create Dictionary    name=IsActive          column=D    field_type=switch
+    ${SLIKOJKCode} =       Create Dictionary    name=SLIKOJKCode       column=E    field_type=text
+    ${SILARASOJKCode} =    Create Dictionary    name=SILARASOJKCode    column=F    field_type=text
+    ${OrderKey} =          Create Dictionary    name=OrderKey          column=G    field_type=text
+
+    ${fieldMap2} =     Create List          ${GeneralCode}                   ${Code}    ${Description}    ${IsActiveDetail}    ${SLIKOJKCode}    ${SLIKOJKCode}    ${SILARASOJKCode}    ${OrderKey}
+    ${workSheet2} =    Create Dictionary    Sub General Code=${fieldMap2}
 
 
-    ${BranchCode} =    Create Dictionary    name=BranchCode    column=A    field_type=text
 
-    ${DocTypeID} =     Create Dictionary    name=DocTypeID           column=B        field_type=lookup
-    ${DocNo} =         Create Dictionary    name=DocNo               column=C        field_type=text
-    ${EffDate} =       Create Dictionary    name=EffDate             column=D        field_type=date
-    ${ExpDate} =       Create Dictionary    name=ExpDate             column=E        field_type=date
-    ${fieldMap3} =     Create List          ${BranchCode}            ${DocTypeID}    ${DocNo}             ${EffDate}    ${ExpDate}
-    ${workSheet3} =    Create Dictionary    Document=${fieldMap3}
+    ${GenealCode} =        Create Dictionary    name=GenealCode        column=A    field_type=text
+    ${SubGeneralCode} =    Create Dictionary    name=SubGeneralCode    column=B    field_type=text
+
+    ${Code} =              Create Dictionary    name=Code              column=C    field_type=text
+    ${Description} =       Create Dictionary    name=Description       column=D    field_type=text
+    ${IsActiveDetail} =    Create Dictionary    name=IsActive          column=E    field_type=switch
+    ${SLIKOJKCode} =       Create Dictionary    name=SLIKOJKCode       column=F    field_type=text
+    ${SILARASOJKCode} =    Create Dictionary    name=SILARASOJKCode    column=G    field_type=text
+    ${OrderKey} =          Create Dictionary    name=OrderKey          column=H    field_type=text
+
+    ${fieldMap3} =     Create List          ${SubGeneralCode}                       ${Code}    ${Description}    ${IsActiveDetail}    ${SLIKOJKCode}    ${SLIKOJKCode}    ${SILARASOJKCode}    ${OrderKey}
+    ${workSheet3} =    Create Dictionary    Sub General Code Detail=${fieldMap2}
 
 
     ${listMapExcel} =    Create List    ${workSheet1}    ${workSheet2}    ${workSheet3}
 
 
 
-    Input From Excel RN    files/excel/IFINSYS/Branch.xlsx    2    ${listMapExcel}
+    Input From Excel RN    files/excel/IFINSYS/General Code.xlsx    2    ${listMapExcel}
 
 
-    # ${BranchCode} =    Create Dictionary    name=BranchCode    column=A    field_type=text
-
-    # ${DocTypeID} =     Create Dictionary    name=DocTypeID           column=B        field_type=lookup
-    # ${DocNo} =         Create Dictionary    name=DocNo               column=C        field_type=text
-    # ${EffDate} =       Create Dictionary    name=EffDate             column=D        field_type=date
-    # ${ExpDate} =       Create Dictionary    name=ExpDate             column=E        field_type=date
-    # ${fieldMap3} =     Create List          ${BranchCode}            ${DocTypeID}    ${DocNo}             ${EffDate}    ${ExpDate}
-    # ${workSheet3} =    Create Dictionary    Document=${fieldMap3}
-
-
-    # ${listMapExcel} =    Create List    ${workSheet3}
-
-
-
-    # Input From Excel    files/excel/IFINSYS/Branch Document.xlsx    2    ${listMapExcel}
+    # Input From Excel RN    files/excel/IFINSYS/Employee.xlsx    2
 
 
 
@@ -590,7 +479,7 @@ IFINSYS
 
 
     # [Setup]                 Set Selenium Speed    0.2s
-    # Open Browser & Login    Danu                  Danu@1
+    # Open Browser & Login    Danu                  Danu@2
     # Open Modul              Config
     # Open Sidebar Menu       Parent                Common Master File    Child    Province
 
